@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(27, 79, 47);
+  padding: 10px 30px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+#menu-toggle {
+  display: none;
+}
+
+
+.menu-icon {
+  display: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: rgb(88, 214, 141);
+}
+
+.nav-links a.active {
+  background-color: rgb(19, 134, 67); 
+  color: white;
+  padding: 5px 12px;
+  border-radius: 12px;
+}
+
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button {
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button.login {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+button.login:hover {
+  background: white;
+  color: rgb(27, 79, 47);
+}
+
+button.signup {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+button.signup:hover {
+  background: white;
+  color: rgb(27, 79, 47);
+}
+
+button.translate {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button.translate:hover {
+  background: white;
+  color: rgb(27, 79, 47);
+}
+
+
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links, .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+  }
+
+  #menu-toggle:checked ~ .nav-links,
+  #menu-toggle:checked ~ .nav-buttons {
+    max-height: 500px; 
+  }
+
+  .nav-links a {
+    font-size: 18px;
+    padding: 8px 0;
+  }
+
+  .nav-buttons {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .navbar {
+    padding: 10px 20px;
+  }
+}
