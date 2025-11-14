@@ -1,4 +1,5 @@
 body {
+  background-color: #f0f8f0;
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -18,11 +19,9 @@ body {
   font-weight: bold;
 }
 
-
 #menu-toggle {
   display: none;
 }
-
 
 .menu-icon {
   display: none;
@@ -30,7 +29,6 @@ body {
   color: white;
   cursor: pointer;
 }
-
 
 .nav-links {
   list-style: none;
@@ -57,7 +55,6 @@ body {
   padding: 5px 12px;
   border-radius: 12px;
 }
-
 
 .nav-buttons {
   display: flex;
@@ -107,7 +104,337 @@ button.translate:hover {
   color: rgb(27, 79, 47);
 }
 
+/* css per reports.html */
+.hero {
+  background: url('https://www.njeshi.com/wp-content/uploads/2020/01/air-quality-control-780x439-1.jpg') center/cover no-repeat;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
 
+.hero h2 {
+  font-size: 48px;
+  margin: 0;
+  text-shadow: bold;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+.main {
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 300px;
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition-delay: 0.2;
+}
+
+.card h3 {
+  color: #2e7d32;
+}
+
+.card p {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #1b5e20;
+}
+
+.report-section {
+  background-color: #f0f8f0;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.report-section h2 {
+  color: #2c7a2c;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.report-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.report-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2c7a2c;
+}
+
+.report-form input,.report-form select,.report-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+#submit{
+  background-color: #2c7a2c;
+  color: #ffffff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 235px;
+}
+
+#submit:hover{
+  background-color: #1e5a1e;
+}
+
+.stats-section {
+  background-color: #f0f8f0;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.stats-section h2 {
+  color: #2c7a2c;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;           
+  justify-content: center; 
+}
+
+.stats-card {
+  flex: 1 1 250px;     
+  max-width: 300px;  
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.stats-card:hover{
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition-delay: 0.2;
+}
+
+.stats-card h3 {
+  color: #2c7a2c;
+  margin-bottom: 15px;
+}
+
+.stats-card p {
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.cities-section {
+  background-color: #eef6ee;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.cities-section h2 {
+  color: #2c7a2c;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}
+
+.cities-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;           
+  justify-content: center; 
+}
+
+.city-card {
+  flex: 1 1 250px;     
+  max-width: 300px;  
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.city-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition-delay: 0.2;
+}
+
+.city-card h3 {
+  color: #2c7a2c;
+  margin-bottom: 15px;
+}
+
+.city-card p {
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.5;
+  margin: 5px 0;
+}
+
+.city-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.tips-section {
+  background-color: #f0f8f0;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.tips-section h2 {
+  color: #2c7a2c;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}
+
+.tips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;           
+  justify-content: center; 
+}
+
+.tip-card {
+  flex: 1 1 250px;     
+  max-width: 300px;  
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.tip-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition-delay: 0.2;
+}
+
+.tip-card h3 {
+  color: #2c7a2c;
+  margin: 15px 0 10px;
+}
+
+.tip-card p {
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.5;
+  margin: 5px 0;
+}
+
+.tip-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/*Footer*/
+.footer {
+  background-color: rgb(27, 79, 47);
+  color: #ffffff;
+  padding: 40px 20px 20px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-about,.footer-links,.footer-contact {
+  flex: 1 1 250px;
+  margin-bottom: 20px;
+}
+
+.footer h3, .footer h4 {
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.footer p, .footer ul, .footer li, .footer a {
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #ffffff50;
+  padding-top: 15px;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #ffffffaa;
+}
+
+
+/*Responsive*/
 @media screen and (max-width: 768px) {
   .menu-icon {
     display: block;
@@ -121,7 +448,6 @@ button.translate:hover {
     margin-top: 10px;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.4s ease;
   }
 
   #menu-toggle:checked ~ .nav-links,
@@ -142,4 +468,30 @@ button.translate:hover {
   .navbar {
     padding: 10px 20px;
   }
+
+  #submit{
+    margin-left: 110px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-about,
+  .footer-links,
+  .footer-contact {
+    margin: -30px;
+    margin-top: -55px;
+  }
+
+  .footer-links ul {
+    padding: 10px;
+  }
+
+  .footer-links li {
+    margin-bottom: 8px;
+  }
 }
+
