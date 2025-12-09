@@ -104,6 +104,109 @@ button.translate:hover {
   color: rgb(27, 79, 47);
 }
 
+/* SLIDER */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(65%);
+}
+
+.caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+.caption h1 {
+  font-size: 55px;
+  margin-bottom: 15px;
+  text-shadow: 0px 0px 10px black;
+}
+
+.caption p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.btn-main {
+  background: #2ecc71;
+  padding: 12px 25px;
+  border-radius: 25px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-main:hover {
+  background: #239b56;
+}
+
+/* FEATURES */
+.features {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.feature-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 35px;
+}
+
+.f-box {
+  background: white;
+  padding: 25px;
+  width: 28%;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* LATEST REPORTS */
+.latest-reports {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.reports-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.report-card {
+  width: 28%;
+  background: white;
+  padding-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.report-card img {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+}
+
 /* Reports.html */
 .hero {
   background: url('img/air.jpg');

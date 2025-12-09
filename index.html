@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
     <nav class="navbar">
         <div class="logo">🌿 EkoKosova</div>
@@ -31,6 +32,99 @@
 </header>
 
 
+<!-- HERO SLIDER -->
+<section class="hero-slider">
+
+  <div class="slide fade">
+    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=60">
+    <div class="caption">
+      <h1>Mbro Natyrën</h1>
+      <p>Raporto ndotjen dhe kontribuo për një Kosovë më të pastër.</p>
+      <a href="Reports.html" class="btn-main">Shiko Raportet</a>
+    </div>
+  </div>
+
+  <div class="slide fade">
+    <img src="https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=1600&q=60">
+    <div class="caption">
+      <h1>Bëhu pjesë e ndryshimit</h1>
+      <p>Çdo raport i yti ndihmon komunitetin dhe natyrën.</p>
+      <a href="about.html" class="btn-main">Rreth nesh</a>
+    </div>
+  </div>
+
+  <div class="slide fade">
+    <img src="https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1600&q=60">
+    <div class="caption">
+      <h1>Ruaj të ardhmen</h1>
+      <p>Monitoro lokacionet e ndotura përmes hartës interaktive.</p>
+      <a href="Reports.html" class="btn-main">Harta Raporteve</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2>Pse EkoKosova?</h2>
+  
+  <div class="feature-grid">
+    <div class="f-box">
+      <h3>📸 Raportim i Shpejtë</h3>
+      <p>Ngarko foto dhe vendos lokacionin për raport të menjëhershëm.</p>
+    </div>
+    <div class="f-box">
+      <h3>🌍 Harta Interaktive</h3>
+      <p>Shiko raportimet në kohë reale në hartën e Kosovës.</p>
+    </div>
+    <div class="f-box">
+      <h3>⏳ Gjurmim i Statusit</h3>
+      <p>Shiko nëse raporti është zgjidhur apo në proces.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST REPORTS -->
+<section class="latest-reports">
+  <h2>Raportet e Fundit</h2>
+
+  <div class="reports-row">
+    <div class="report-card">
+      <img src="">
+      <h4></h4>
+      <p></p>
+    </div>
+
+    <div class="report-card">
+  <img src="">
+  <h4></h4>
+  <p></p>
+</div>
+
+
+    <div class="report-card">
+      <img src="">
+      <h4></h4>
+      <p></p>
+    </div>
+  </div>
+</section>
+
+
+<script>
+let slideIndex = 0;
+showSlides();
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("slide");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  slides[slideIndex-1].style.display = "block";  
+  setTimeout(showSlides, 4500);
+}
+</script>
 
 
 
