@@ -321,7 +321,7 @@ button.translate:hover {
 
 /* Reports.html */
 .hero {
-  background: url('img/air.jpg');
+  background: url('img/SliderFoto3.avif');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -524,6 +524,19 @@ button.translate:hover {
 
 
 /* Quotes.html */
+
+.hero-quotes {
+  background: url('img/natyra.avif');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
 
 .quotes-section {
   background-color: #f0f8f0;
