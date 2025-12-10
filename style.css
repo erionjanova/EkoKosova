@@ -107,15 +107,13 @@ button.translate:hover {
 }
 
 
-
-
 /*Home Page*/
 
 /* SLIDER */
 .hero-slider {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 560px;
   overflow: hidden;
   margin-top: 0;
 }
@@ -154,19 +152,6 @@ button.translate:hover {
   margin-bottom: 25px;
 }
 
-.btn-main {
-  background: #2ecc71;
-  padding: 12px 25px;
-  border-radius: 25px;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.btn-main:hover {
-  background: #239b56;
-}
-
 /* FEATURES */
 .features {
   text-align: center;
@@ -175,12 +160,15 @@ button.translate:hover {
 
 .feature-grid {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
   margin-top: 35px;
 }
 
 .f-box {
+  flex: 1 1 250px;     
+  max-width: 350px;  
   background: white;
   padding: 25px;
   width: 28%;
@@ -196,6 +184,7 @@ button.translate:hover {
 
 .reports-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
   margin-top: 30px;
@@ -215,9 +204,6 @@ button.translate:hover {
 }
 
 
-
-
-
 /* About.html */
 .hero-about {
     background: url('img/SliderFoto2.avif') center/cover no-repeat;
@@ -233,7 +219,10 @@ button.translate:hover {
 .hero-about::after {
     content: '';
     position: absolute;
-    top:0; left:0; right:0; bottom:0;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
     background: rgba(0,0,0,0.4);
 }
 .hero-text {
@@ -264,6 +253,7 @@ button.translate:hover {
     max-width: 250px;
     text-align: center;
 }
+
 .card img {
     width: 60px;
     margin-bottom: 1rem;
@@ -291,6 +281,10 @@ button.translate:hover {
     border-radius: 15px;
     width: 180px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.team-member:hover{
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition-delay: 0.2s;
 }
 .team-member img {
     width: 80px;
