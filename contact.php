@@ -15,17 +15,17 @@
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <ul class="nav-links">
-            <li><a href="index.html">Ballina</a></li>
-            <li><a href="about.html">Rreth Nesh</a></li>
-            <li><a href="Reports.html">Raportimet</a></li>
-            <li><a href="contact.html" class="active">Kontakti</a></li>
-            <li><a href="quotes.html">Thenje</a></li>
+            <li><a href="index.php">Ballina</a></li>
+            <li><a href="about.php">Rreth Nesh</a></li>
+            <li><a href="Reports.php">Raportimet</a></li>
+            <li><a href="contact.php" class="active">Kontakti</a></li>
+            <li><a href="quotes.php">Thenje</a></li>
         </ul>
 
        
          <div class="nav-buttons">
-            <button class="login"><a href="Login.html" style="text-decoration: none;  color: white;">Kyçu</a></button>
-            <button class="signup"><a href="Signup.html" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
+            <button class="login"><a href="Login.php" style="text-decoration: none;  color: white;">Kyçu</a></button>
+            <button class="signup"><a href="Signup.php" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
             <button class="translate">🌐</button>
         </div>
     </nav>
@@ -84,11 +84,11 @@
         <div class="footer-links">
             <h4>Navigimi</h4>
             <ul>
-                <li><a href="index.html">Ballina</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="Reports.html">Raportimet</a></li>
-                <li><a href="contact.html">Kontakti</a></li>
-                <li><a href="quotes.html">Thenje</a></li>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="Reports.php">Raportimet</a></li>
+                <li><a href="contact.php">Kontakti</a></li>
+                <li><a href="quotes.php">Thenje</a></li>
             </ul>
         </div>
         <div class="footer-contact">

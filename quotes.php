@@ -15,16 +15,16 @@
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <ul class="nav-links">
-            <li><a href="index.html">Ballina</a></li>
-            <li><a href="about.html">Rreth Nesh</a></li>
-            <li><a href="Reports.html">Raportimet</a></li>
-            <li><a href="contact.html">Kontakti</a></li>
-            <li><a href="quotes.html" class="active">Thenje</a></li>
+            <li><a href="index.php">Ballina</a></li>
+            <li><a href="about.php">Rreth Nesh</a></li>
+            <li><a href="Reports.php">Raportimet</a></li>
+            <li><a href="contact.php">Kontakti</a></li>
+            <li><a href="quotes.php" class="active">Thenje</a></li>
         </ul>
 
          <div class="nav-buttons">
-            <button class="login"><a href="Login.html" style="text-decoration: none;  color: white;">Kyçu</a></button>
-            <button class="signup"><a href="Signup.html" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
+            <button class="login"><a href="Login.php" style="text-decoration: none;  color: white;">Kyçu</a></button>
+            <button class="signup"><a href="Signup.php" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
             <button class="translate">🌐</button>
         </div>
     </nav>
@@ -67,17 +67,17 @@
     <div class="card">
         <h3>Raporto Ndotje</h3>
         <p>Ngarko foto, përshkrim dhe lokacion të ndotjes për të informuar komunitetin.</p>
-        <a href="Reports.html#reportform" class="btn">Raporto</a>
+        <a href="Reports.php#reportform" class="btn">Raporto</a>
     </div>
     <div class="card">
         <h3>Shiko Raporte</h3>
         <p>Shiko raportet e tjera dhe shkruaj për prioritetet e ndotjeve më të rënda.</p>
-        <a href="Reports.html#shikoraporte" class="btn">Shiko</a>
+        <a href="Reports.php#shikoraporte" class="btn">Shiko</a>
     </div>
     <div class="card">
         <h3>Këshilla Mjedisore</h3>
         <p>Lexo këshilla praktike për mbrojtjen e mjedisit dhe një Kosovë më të pastër.</p>
-        <a href="Reports.html#keshilla" class="btn">Lexo</a>
+        <a href="Reports.php#keshilla" class="btn">Lexo</a>
     </div>
 </section>
 
@@ -91,11 +91,11 @@
         <div class="footer-links">
             <h4>Navigimi</h4>
             <ul>
-                <li><a href="index.html">Ballina</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="Reports.html">Raportimet</a></li>
-                <li><a href="contact.html">Kontakti</a></li>
-                <li><a href="quotes.html">Thenje</a></li>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="Reports.php">Raportimet</a></li>
+                <li><a href="contact.php">Kontakti</a></li>
+                <li><a href="quotes.php">Thenje</a></li>
             </ul>
         </div>
         <div class="footer-contact">

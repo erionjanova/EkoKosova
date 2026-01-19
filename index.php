@@ -16,16 +16,16 @@
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <ul class="nav-links">
-            <li><a href="index.html" class="active">Ballina</a></li>
-            <li><a href="about.html">Rreth Nesh</a></li>
-            <li><a href="Reports.html">Raportimet</a></li>
-            <li><a href="contact.html">Kontakti</a></li>
-            <li><a href="quotes.html">Thenje</a></li>
+            <li><a href="index.php" class="active">Ballina</a></li>
+            <li><a href="about.php">Rreth Nesh</a></li>
+            <li><a href="Reports.php">Raportimet</a></li>
+            <li><a href="contact.php">Kontakti</a></li>
+            <li><a href="quotes.php">Thenje</a></li>
         </ul>
 
         <div class="nav-buttons">
-            <button class="login"><a href="Login.html" style="text-decoration: none;  color: white;">Kyçu</a></button>
-            <button class="signup"><a href="Signup.html" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
+            <button class="login"><a href="Login.php" style="text-decoration: none;  color: white;">Kyçu</a></button>
+            <button class="signup"><a href="Signup.php" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
             <button class="translate">🌐</button>
         </div>
     </nav>
@@ -40,7 +40,7 @@
     <div class="caption">
       <h1>Mbro Natyrën</h1>
       <p>Raporto ndotjen dhe kontribuo për një Kosovë më të pastër.</p>
-      <a href="Reports.html" class="btn">Shiko Raportet</a>
+      <a href="Reports.php" class="btn">Shiko Raportet</a>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
     <div class="caption">
       <h1>Bëhu pjesë e ndryshimit</h1>
       <p>Çdo raport i yti ndihmon komunitetin dhe natyrën.</p>
-      <a href="about.html" class="btn">Rreth Nesh</a>
+      <a href="about.php" class="btn">Rreth Nesh</a>
     </div>
   </div>
 
@@ -58,7 +58,7 @@
     <div class="caption">
       <h1>Ruaj të ardhmen</h1>
       <p>Monitoro lokacionet e ndotura përmes hartës interaktive.</p>
-      <a href="Reports.html" class="btn">Harta Raporteve</a>
+      <a href="Reports.php" class="btn">Harta Raporteve</a>
     </div>
   </div>
 </section>
@@ -149,11 +149,11 @@ function showSlides() {
         <div class="footer-links">
             <h4>Navigimi</h4>
             <ul>
-                <li><a href="index.html">Ballina</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="Reports.html">Raportimet</a></li>
-                <li><a href="contact.html">Kontakti</a></li>
-                <li><a href="quotes.html">Thenje</a></li>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="Reports.php">Raportimet</a></li>
+                <li><a href="contact.php">Kontakti</a></li>
+                <li><a href="quotes.php">Thenje</a></li>
             </ul>
         </div>
         <div class="footer-contact">
