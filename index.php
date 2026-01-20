@@ -30,7 +30,7 @@ session_start();
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome">
-                    <span style="color:white;">Mirësevjen,</span>
+                    <span style="color:white;">Miresevjen,</span>
                     <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                 </span>
 

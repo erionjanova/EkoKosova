@@ -2,27 +2,21 @@
 session_start();
 include 'config.php';
 
-if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
-    header("Location: Login.php");
+$id = $_GET['id'] ?? null;
+
+if(!$id){
+    header("Location: admin_dashboard.php");
     exit;
 }
 
-if(isset($_GET['id']) && is_numeric($_GET['id'])){
-    $id = $_GET['id'];
-
-    if($id == $_SESSION['user_id']){
-        echo "<script>alert('Nuk mund te fshini veten.'); window.history.back();</script>";
-        exit;
-    }
-
-    $stmt = $conn->prepare("DELETE FROM users WHERE id = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-
-    header("Location: manage_users.php");
-    exit;
-} else {
-    header("Location: manage_users.php");
+if($id == $_SESSION['user_id']){
+    header("Location: manage_users.php?error=self_delete");
     exit;
 }
+
+$userQuery = $conn->prepare("DELETE FROM users WHERE id = ?");
+$userQuery->execute([$id]);
+
+header("Location: manage_users.php?success=deleted");
+exit;
 ?>

@@ -1,5 +1,9 @@
 <?php
 session_start();
+include 'config.php';
+
+$quotesQuery = $conn->query("SELECT * FROM quotes ORDER BY id DESC");
+$quotes = $quotesQuery->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -68,27 +72,35 @@ session_start();
     </div>
 </section>
 
-
 <section class="quotes-section">
-    <h2>Thenje Mjedisore</h2>
+    <h2>Thenie Mjedisore</h2>
+
     <div class="quotes-container">
-        <div class="quote-card">
-            <img src="img/member.png" alt="speaker1" class="quotes-img">
-            <p>"Natyra nuk ka nevojë për ne – ne kemi nevojë për natyrën."</p>
-            <span>- Arben Hoxha</span>
-        </div>
+        <?php if(!empty($quotes)): ?>
+            <?php foreach($quotes as $q): ?>
+                <div class="quote-card">
+                    <img src="<?= $q['autor_img'] ? $q['autor_img'] : 'img/member.png' ?>" alt="autor">
+                    <p>"<?= htmlspecialchars($q['thenje_text']) ?>"</p>
+                    <span>- <?= htmlspecialchars($q['autori']) ?></span>
 
-        <div class="quote-card">
-            <img src="img/member.png" alt="speaker2" class="quotes-img">
-            <p>"Planeti ynë është shtëpia jonë e vetme. Duhet ta ruajmë."</p>
-            <span>- Elira Dervishi</span>
-        </div>
-
-        <div class="quote-card">
-            <img src="img/member.png" alt="speaker3" class="quotes-img">
-            <p>"Çdo pemë që mbjell është një dhuratë për gjeneratat e ardhshme."</p>
-            <span>- Ilir Kola</span>
-        </div>
+                    <?php if(isset($_SESSION['user_id']) && $_SESSION['is_admin'] == 1): ?>
+                        <a href="konfigurimet.php" 
+                           style="display:inline-block; margin-top:10px; 
+                                  padding: 6px 12px; 
+                                  background-color: #2E7D32; 
+                                  color: white; 
+                                  text-decoration: none; 
+                                  border-radius: 6px; 
+                                  font-weight: bold; 
+                                  transition: 0.3s;">
+                            Menaxho Thenie
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p style="text-align:center; width:100%;">Nuk ka thënie të publikuara ende.</p>
+        <?php endif; ?>
     </div>
 </section>
 

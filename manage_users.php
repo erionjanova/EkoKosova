@@ -116,7 +116,6 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.6);
-    backdrop-filter: blur(2px);
 }
 
 .modal-content {
@@ -171,7 +170,7 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .modal .btn.cancel {
-    background-color: #7f8c8d;
+    background-color: green;
     color: white;
     border: none;
 }
@@ -193,6 +192,45 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 .close:hover {
     color: #333;
 }
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: #fff;
+    width: 400px;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: red;
+}
+
+.modal-content .btn {
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content .btn:hover {
+    background: #1b5e20;
+}
+
 </style>
 
 </head>
@@ -281,7 +319,7 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
         <td><?= $row['is_admin'] ? 'Admin' : 'User' ?></td>
         <td>
             <a class="btn edit" href="edit_users.php?id=<?= $row['id'] ?>">✏️</a>
-            <a class="btn delete" href="delete_users.php?id=<?= $row['id'] ?>">🗑️</a>
+            <a class="btn delete" href="delete_users.php?id=<?= $row['id'] ?>" data-id="<?= $row['id'] ?>">🗑️</a>
         </td>
     </tr>
     <?php endforeach; ?>
@@ -303,6 +341,15 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="quotes.php">Thenje</a></li>
             </ul>
         </div>
+        
+        <div id="selfDeleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>⚠️ Veprim i ndaluar</h3>
+                <p>Nuk mund ta fshini llogarinë tuaj.</p>
+                <button class="btn cancel">OK</button>
+            </div>
+        </div>
         <div class="footer-contact">
             <h4>Kontakti</h4>
             <p>Email: info@ekokosova.com</p>
@@ -317,31 +364,51 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('deleteModal');
+    const deleteModal = document.getElementById('deleteModal');
     const confirmBtn = document.getElementById('confirmDelete');
-    const cancelBtn = modal.querySelector('.btn.cancel');
-    const closeBtn = modal.querySelector('.close');
+    const cancelBtn = deleteModal.querySelector('.btn.cancel');
+    const closeBtn = deleteModal.querySelector('.close');
 
+    const selfModal = document.getElementById('selfDeleteModal');
+    const selfClose = selfModal.querySelector('.close');
+    const selfCancel = selfModal.querySelector('.btn.cancel');
+
+    const currentUserId = <?= $_SESSION['user_id'] ?>;
 
     const deleteLinks = document.querySelectorAll('.user-table .delete');
 
     deleteLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const href = this.getAttribute('href'); 
-            confirmBtn.setAttribute('href', href);
-            modal.style.display = 'block';
+            const userId = parseInt(this.dataset.id);
+
+            if(userId === currentUserId) {
+                // kjo perdoret kur tenton useri ta fshij veten qe shfaq popup 
+                selfModal.style.display = 'block';
+            } else {
+                // kjo ndodh kur tenton ta fshij tjetrin
+                const href = this.getAttribute('href'); 
+                confirmBtn.setAttribute('href', href);
+                deleteModal.style.display = 'block';
+            }
         });
     });
 
-    cancelBtn.addEventListener('click', () => modal.style.display = 'none');
-    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    // pjesa e fshirjes normal
+    cancelBtn.addEventListener('click', () => deleteModal.style.display = 'none');
+    closeBtn.addEventListener('click', () => deleteModal.style.display = 'none');
 
+    // pjesa e fshirjes se vetes
+    selfCancel.addEventListener('click', () => selfModal.style.display = 'none');
+    selfClose.addEventListener('click', () => selfModal.style.display = 'none');
 
+    // mbyllja e popup
     window.addEventListener('click', (e) => {
-        if(e.target === modal) modal.style.display = 'none';
+        if(e.target === deleteModal) deleteModal.style.display = 'none';
+        if(e.target === selfModal) selfModal.style.display = 'none';
     });
 });
+
 </script>
 </body>
 </html>

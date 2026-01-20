@@ -61,6 +61,12 @@ $result = $conn->query("SELECT id, name, username, email, is_admin FROM users");
     box-shadow: 0 6px 10px rgba(0,0,0,0.3);
 }
 
+.close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+}
+
 .footer{
     margin-top:88px;
 }
@@ -91,8 +97,8 @@ $result = $conn->query("SELECT id, name, username, email, is_admin FROM users");
             <li><a href="index.php">Ballina</a></li>
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="Reports.php">Raportimet</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
             <li><a href="contact.php">Kontakti</a></li>
+            <li><a href="quotes.php">Thenje</a></li>
         </ul>
 
         <div class="nav-buttons">
@@ -134,10 +140,11 @@ $result = $conn->query("SELECT id, name, username, email, is_admin FROM users");
     <div class="dashboard-buttons">
         <a href="manage_users.php" class="btn">👥 Menaxho Userat</a>
         <a href="manage_reports.php" class="btn">📄 Menaxho Raportimet</a>
+        <a href="manage_contacts.php" class="btn">📞 Menaxho Kontaktimet</a>
+        <a href="konfigurimet.php" class="btn">⚙️ Konfigurimet</a>
     </div>
 </div>
-   
-</main>
+
 
 <footer class="footer">
     <div class="footer-container">
@@ -167,6 +174,7 @@ $result = $conn->query("SELECT id, name, username, email, is_admin FROM users");
         <p>&copy; 2025 EkoKosova. Të gjitha të drejtat e rezervuara.</p>
     </div>
 </footer>
+
 
 </body>
 </html>

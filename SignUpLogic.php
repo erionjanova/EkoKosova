@@ -27,7 +27,7 @@ if(isset($_POST['submit'])){
     $userQuery->execute();
 
     if($userQuery->rowCount() > 0){
-        $_SESSION['error_message'] = "⚠️ Username ose email ekziston tashmë.";
+        $_SESSION['error_message'] = "⚠️ Username ose email ekziston tashme.";
         header("Location: SignUp.php");
         exit;
     }
