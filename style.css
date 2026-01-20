@@ -654,11 +654,6 @@ button.translate:hover {
 
 
 
-
-
-
-
-
 /*Sign-Up*/
 .signup-container {
     display: flex;
@@ -731,8 +726,7 @@ button.translate:hover {
   color: black;
 }
 
-
-    /*Footer*/
+/*Footer*/
 .footer {
   background-color: rgb(27, 79, 47);
   color: #ffffff;

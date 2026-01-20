@@ -1,0 +1,347 @@
+<?php
+session_start();
+include 'config.php';
+
+
+if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
+    header("Location: Login.php");
+    exit;
+}
+
+$userQuery = $conn->prepare("SELECT id, name, username, email, is_admin FROM users ORDER BY id ASC");
+$userQuery->execute();
+$users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Menaxho Perdoruesit | Admin Dashboard</title>
+
+<style>
+
+.back-btn {
+    display: inline-block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #2e7d32;
+    transition: 0.3s;
+    text-align: center;
+}
+.back-btn:hover {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.user-table {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto 50px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.user-table th, .user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.user-table th {
+    background: #2e7d32;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.user-table tr:hover {
+    background: #d5f5e3;
+}
+
+.user-table a.btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    margin: 0 2px;
+    display: inline-block;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.user-table .edit {
+    background: #2196F3;
+}
+
+.user-table .edit:hover {
+    background: #0b7dda;
+}
+
+.user-table .delete {
+    background: #f44336;
+}
+
+.user-table .delete:hover {
+    background: #da190b;
+}
+
+@media (max-width: 768px) {
+    .user-table th, .user-table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .back-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 25px 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
+}
+
+.modal-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.modal h3 {
+    color: #c0392b;
+    margin-bottom: 10px;
+}
+
+.modal p {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.modal .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.modal .btn.delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal .btn.delete:hover {
+    background-color: #da190b;
+}
+
+.modal .btn.cancel {
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+}
+
+.modal .btn.cancel:hover {
+    background-color: #95a5a6;
+}
+
+.close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    transition: 0.3s;
+}
+
+.close:hover {
+    color: #333;
+}
+</style>
+
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo">🌿 EkoKosova</div>
+
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+        <ul class="nav-links">
+            <li><a href="index.php" class="active">Ballina</a></li>
+            <li><a href="about.php">Rreth Nesh</a></li>
+            <li><a href="Reports.php">Raportimet</a></li>
+            <li><a href="contact.php">Kontakti</a></li>
+            <li><a href="quotes.php">Thenje</a></li>
+        </ul>
+
+        <div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-icon">🗑️</div>
+        <h3>Jeni te sigurt?</h3>
+        <p>Po perpiqeni te fshini kete perdorues. Ky veprim nuk mund te kthehet.</p>
+        <div class="modal-buttons">
+            <a href="#" id="confirmDelete" class="btn delete">Fshij</a>
+            <button class="btn cancel">Anulo</button>
+        </div>
+    </div>
+</div>
+
+        <div class="nav-buttons">
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <span class="welcome">
+                    <span style="color:white;">Miresevjen,</span>
+                    <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+                </span>
+
+                <?php if($_SESSION['is_admin'] == 1): ?>
+                    <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
+                <?php endif; ?>
+
+                <form action="Logout.php" method="POST" class="translate" style="display:inline; margin-left:5px;">
+                    <button type="submit" class="translate">
+                        <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
+                    </button>
+                </form>
+
+                <button class="translate" style="margin-left:5px;">🌐</button>
+
+            <?php else: ?>
+    
+                <button class="login">
+                    <a href="Login.php" style="text-decoration:none;color:white;">Kyçu</a>
+                </button>
+
+                <button class="signup">
+                    <a href="Signup.php" style="text-decoration:none;color:white;">Regjistrohu</a>
+                </button>
+
+                <button class="translate">🌐</button>
+            <?php endif; ?>
+        </div>
+    </nav>
+</header>
+
+<h2 style="text-align:center">👥 Menaxhimi i Perdoruesve</h2>
+
+<table class="user-table">
+    <tr>
+        <th>ID</th>
+        <th>Emri</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Roli</th>
+        <th>Veprime</th>
+    </tr>
+
+    <?php foreach($users as $row): ?>
+    <tr>
+        <td><?= $row['id'] ?></td>
+        <td><?= htmlspecialchars($row['name']) ?></td>
+        <td><?= htmlspecialchars($row['username']) ?></td>
+        <td><?= htmlspecialchars($row['email']) ?></td>
+        <td><?= $row['is_admin'] ? 'Admin' : 'User' ?></td>
+        <td>
+            <a class="btn edit" href="edit_users.php?id=<?= $row['id'] ?>">✏️</a>
+            <a class="btn delete" href="delete_users.php?id=<?= $row['id'] ?>">🗑️</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3 class="logo">🌿 EkoKosova</h3>
+            <p>“Mbrojmë Natyrën, Përmirësojmë Kosovën”</p>
+        </div>
+        <div class="footer-links">
+            <h4>Navigimi</h4>
+            <ul>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="Reports.php">Raportimet</a></li>
+                <li><a href="contact.php">Kontakti</a></li>
+                <li><a href="quotes.php">Thenje</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Kontakti</h4>
+            <p>Email: info@ekokosova.com</p>
+            <p>Tel: +383 44 123 456</p>
+            <p>Prishtinë, Kosovë</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 EkoKosova. Të gjitha të drejtat e rezervuara.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDelete');
+    const cancelBtn = modal.querySelector('.btn.cancel');
+    const closeBtn = modal.querySelector('.close');
+
+
+    const deleteLinks = document.querySelectorAll('.user-table .delete');
+
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href'); 
+            confirmBtn.setAttribute('href', href);
+            modal.style.display = 'block';
+        });
+    });
+
+    cancelBtn.addEventListener('click', () => modal.style.display = 'none');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+
+
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) modal.style.display = 'none';
+    });
+});
+</script>
+</body>
+</html>

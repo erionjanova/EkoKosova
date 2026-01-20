@@ -13,11 +13,11 @@ if(isset($_POST['submit'])){
     }
 
     $sql = "SELECT id, name, username, email, password, is_admin FROM users WHERE username = :username";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
+    $userQuery = $conn->prepare($sql);
+    $userQuery->bindParam(':username', $username);
+    $userQuery->execute();
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $userQuery->fetch(PDO::FETCH_ASSOC);
 
     if(!$user){
         echo "<script>alert('Username nuk ekziston.'); window.history.back();</script>";
@@ -32,17 +32,19 @@ if(isset($_POST['submit'])){
         $_SESSION['name'] = $user['name'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['is_admin'] = $user['is_admin'];
-
+    
         if($user['is_admin'] == 1){
-            header("Location: admin_dashboard.php");
+            header("Location: admin_dashboard.php"); 
             exit;
         } else {
             header("Location: index.php");
             exit;
         }
+    
     } else {
         echo "<script>alert('Fjalëkalimi është i gabuar.'); window.history.back();</script>";
         exit;
     }
+    
 }
 ?>

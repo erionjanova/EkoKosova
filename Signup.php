@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+$success_message = $_SESSION['success_message'] ?? "";
+$error_message = $_SESSION['error_message'] ?? "";
+
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +16,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Krijo Llogari</title>
+
+<style>
+.error-alert {
+    max-width: 400px;
+    margin: 15px auto;
+    padding: 15px 20px;
+    background-color: #f8d7da; 
+    color: #842029;
+    border-left: 5px solid #f5c2c7;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        
+}
+
+.success-alert {
+    max-width: 400px;
+    margin: 15px auto;
+    padding: 15px 20px;
+    background-color: #d1e7dd; 
+    color: #0f5132;
+    border-left: 5px solid #badbcc;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+}
+</style>
 </head>
 <body>
     <header>
@@ -31,21 +72,29 @@
         <div class="signup-card">
             <h2>Krijo llogari</h2>
 
-            <form action="signupLogic.php" method="post">
+            <?php if(!empty($error_message)): ?>
+                <div class="error-alert"><?= $error_message ?></div>
+            <?php endif; ?>
+
+            <?php if(!empty($success_message)): ?>
+                <div class="success-alert"><?= $success_message ?></div>
+            <?php endif; ?>
+
+            <form action="SignUpLogic.php" method="post">
                 <label>Emri dhe Mbiemri</label>
-                <input type="text" name="name" placeholder="Shkruani Emrin dhe Mbiemrin" required>
+                <input type="text" name="name" placeholder="Shkruani Emrin dhe Mbiemrin">
 
                 <label>Email</label>
-                <input type="email" name="email" placeholder="Shkruani emailin tuaj" required>
+                <input type="email" name="email" placeholder="Shkruani emailin tuaj">
 
                 <label>Username</label>
-                <input type="text" name="username" placeholder="Shkruani username tuaj" required>
+                <input type="text" name="username" placeholder="Shkruani username tuaj">
 
                 <label>Fjalëkalimi</label>
-                <input type="password" name="password" placeholder="Krijo një fjalëkalim" required>
+                <input type="password" name="password" placeholder="Krijo një fjalëkalim">
 
                 <label>Konfirmo fjalëkalimin</label>
-                <input type="password" name="confirm_password" placeholder="Konfirmo fjalëkalimin" required>
+                <input type="password" name="confirm_password" placeholder="Konfirmo fjalëkalimin">
 
                 <button class="signup-btn" type="submit" name="submit">Regjistrohu</button>
             </form>

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +27,37 @@
         </ul>
 
        
-         <div class="nav-buttons">
-            <button class="login"><a href="Login.php" style="text-decoration: none;  color: white;">Kyçu</a></button>
-            <button class="signup"><a href="Signup.php" style="text-decoration: none;  color: white;">Regjistrohu</a></button>
-            <button class="translate">🌐</button>
+        <div class="nav-buttons">
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <span class="welcome">
+                    <span style="color:white;">Mirësevjen,</span>
+                    <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+                </span>
+
+                <?php if($_SESSION['is_admin'] == 1): ?>
+                    <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
+                <?php endif; ?>
+
+                <form action="Logout.php" method="POST" class="translate" style="display:inline; margin-left:5px;">
+                    <button type="submit" class="translate">
+                        <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
+                    </button>
+                </form>
+
+                <button class="translate" style="margin-left:5px;">🌐</button>
+
+            <?php else: ?>
+    
+                <button class="login">
+                    <a href="Login.php" style="text-decoration:none;color:white;">Kyçu</a>
+                </button>
+
+                <button class="signup">
+                    <a href="Signup.php" style="text-decoration:none;color:white;">Regjistrohu</a>
+                </button>
+
+                <button class="translate">🌐</button>
+            <?php endif; ?>
         </div>
     </nav>
 </header>
