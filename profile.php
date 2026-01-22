@@ -192,21 +192,26 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
 
     <div class="profile-section">
         <h3>Settings Personale</h3>
-        <form method="POST" action="update_profile.php" class="settings-form" enctype="multipart/form-data">
-            <label>Ndrysho Username</label>
-            <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>">
+       <form method="POST" action="update_profile.php" class="settings-form" enctype="multipart/form-data">
+    <label>Ndrysho Username</label>
+    <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>">
 
-            <label>Ndrysho Email</label>
-            <input type="text" name="email" value="<?= htmlspecialchars($user['email']) ?>">
+    <label>Ndrysho Email</label>
+    <input type="text" name="email" value="<?= htmlspecialchars($user['email']) ?>">
 
-            <label>Ndrysho Foto Profili (Opsionale)</label>
-            <input type="file" name="profile_pic">
+    <label>Ndrysho Foto Profili (Opsionale)</label>
+    <input type="file" name="profile_pic">
 
-            <label>Ndrysho Fjalekalimin (Opsionale)</label>
-            <input type="password" name="password" placeholder="Fjalekalim i ri">
+    <label>
+        <input type="checkbox" name="delete_photo_pic" value="1"> Fshi foton aktuale
+    </label><br><br>
 
-            <input type="submit" name="submit" value="Ruaj Ndryshimet">
-        </form>
+    <label>Ndrysho Fjalekalimin (Opsionale)</label>
+    <input type="password" name="password" placeholder="Fjalekalim i ri">
+
+    <input type="submit" name="submit" value="Ruaj Ndryshimet">
+</form>
+
     </div>
 </div>
 
