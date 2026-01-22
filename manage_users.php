@@ -8,9 +8,25 @@ if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
     exit;
 }
 
-$userQuery = $conn->prepare("SELECT id, name, username, email, is_admin FROM users ORDER BY id ASC");
+$profile_pic = 'img/member.png'; 
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user_pic = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
+
+$userQuery = $conn->prepare("SELECT id, name, username, email, is_admin, profile_pic FROM users ORDER BY id ASC");
 $userQuery->execute();
 $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -231,6 +247,13 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     background: #1b5e20;
 }
 
+.user-table img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 </style>
 
 </head>
@@ -243,11 +266,11 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <ul class="nav-links">
-            <li><a href="index.php" class="active">Ballina</a></li>
+            <li><a href="index.php">Ballina</a></li>
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="Reports.php">Raportimet</a></li>
             <li><a href="contact.php">Kontakti</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
+            <li><a href="quotes.php">Thenie</a></li>
         </ul>
 
         <div id="deleteModal" class="modal">
@@ -269,6 +292,12 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
                     <span style="color:white;">Miresevjen,</span>
                     <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                 </span>
+
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="profile.php" class="profile-link">
+                        <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+                    </a>
+                <?php endif; ?>
 
                 <?php if($_SESSION['is_admin'] == 1): ?>
                     <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
@@ -299,10 +328,10 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 </header>
 
 <h2 style="text-align:center">👥 Menaxhimi i Perdoruesve</h2>
-
 <table class="user-table">
     <tr>
         <th>ID</th>
+        <th>Foto</th> <!-- Kolona e re -->
         <th>Emri</th>
         <th>Username</th>
         <th>Email</th>
@@ -313,6 +342,10 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach($users as $row): ?>
     <tr>
         <td><?= $row['id'] ?></td>
+        <td>
+            <img src="<?= $row['profile_pic'] ? htmlspecialchars($row['profile_pic']) : 'img/default-avatar.png' ?>" 
+                 alt="Foto Profili" style="width:40px;height:40px;border-radius:50%;">
+        </td>
         <td><?= htmlspecialchars($row['name']) ?></td>
         <td><?= htmlspecialchars($row['username']) ?></td>
         <td><?= htmlspecialchars($row['email']) ?></td>
@@ -338,7 +371,7 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="about.php">Rreth Nesh</a></li>
                 <li><a href="Reports.php">Raportimet</a></li>
                 <li><a href="contact.php">Kontakti</a></li>
-                <li><a href="quotes.php">Thenje</a></li>
+                <li><a href="quotes.php">Thenie</a></li>
             </ul>
         </div>
         

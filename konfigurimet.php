@@ -6,46 +6,6 @@ if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
     header("Location: Login.php");
     exit;
 }
-$error_message = ""; 
-
-if(isset($_POST['submit'])){
-    $thenje_text = trim($_POST['thenje_text']); 
-    $autori = trim($_POST['autori']);      
-
-    if(empty($thenje_text) || empty($autori)){
-        $error_message = "⚠️ Ju lutem plotësoni të gjitha fushat.";
-    } elseif(!isset($_FILES['autor_img']) || $_FILES['autor_img']['error'] == 4){
-        $error_message = "⚠️ Ju lutem vendosni një foto për autorin.";
-    } else {
-       
-        $autor_img = null;
-        if($_FILES['autor_img']['error'] == 0){
-            $ext = pathinfo($_FILES['autor_img']['name'], PATHINFO_EXTENSION);
-            $filename = uniqid() . "." . $ext;
-            $target = "uploads/" . $filename;
-
-            if(!is_dir('uploads')){
-                mkdir('uploads', 0777, true);
-            }
-
-            if(move_uploaded_file($_FILES['autor_img']['tmp_name'], $target)){
-                $autor_img = $target;
-            } else {
-                $error_message = "⚠️ Ndodhi një gabim gjatë ngarkimit të fotos.";
-            }
-        }
-
-        if(empty($error_message)){
-            $qutoesQuery = $conn->prepare("INSERT INTO quotes (thenje_text, autori, autor_img) VALUES (?, ?, ?)");
-            $qutoesQuery->execute([$thenje_text, $autori, $autor_img]);
-
-            header("Location: konfigurimet.php?success=1");
-            exit;
-        }
-    }
-}
-
-
 
 if(isset($_GET['delete'])){
     $id = intval($_GET['delete']);
@@ -67,6 +27,22 @@ if(isset($_GET['delete'])){
 
 $qutoesQuery = $conn->query("SELECT * FROM quotes ORDER BY id ASC");
 $quotes = $qutoesQuery->fetchAll(PDO::FETCH_ASSOC);
+
+
+$profile_pic = 'img/member.png'; 
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $queryPic = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+    $queryPic->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $queryPic->execute();
+    $user_pic = $queryPic->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,33 +54,6 @@ $quotes = $qutoesQuery->fetchAll(PDO::FETCH_ASSOC);
 <link rel="stylesheet" href="style.css">
 <style>
 
-.form-quotes{ 
-    max-width:600px; 
-    margin:30px auto; 
-    background:#fff; 
-    padding:20px; 
-    border-radius:10px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
-}
-.form-quotes input, form textarea{
-     width:100%;
-    padding:10px; 
-    margin:5px 0 15px 0; 
-    border:1px solid #ccc; 
-    border-radius:5px;
-}
-.form-quotes button{ 
-    background:#2E7D32; 
-    color:#fff; 
-    padding:10px 20px; 
-    border:none; 
-    border-radius:5px; 
-    cursor:pointer;
-    margin-left:38%;
-}
-.form-quotes button:hover{ 
-    background:#1b5e20; 
-}
 table{ 
     width:80%; 
     border-collapse:collapse; 
@@ -222,37 +171,6 @@ a:hover{
     border:none;
 }
 .modal .btn.cancel:hover{ background:#95a5a6; }
-
-
-.error-message {
-    background-color: #ffdddd;
-    color: #d8000c;
-    border-left: 5px solid #d8000c;
-    padding: 12px 15px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    font-weight: bold;
-    text-align: center;
-}
-
-
-.footer{
-    margin-top:88px;
-}
-@media screen and (max-width:768px){
-    .dashboard-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .dashboard-card {
-        width: 90%;
-    }
-    .user-table {
-        font-size: 14px;
-    }
-}
-
-
 </style>
 </head>
 <body>
@@ -268,7 +186,7 @@ a:hover{
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="Reports.php">Raportimet</a></li>
             <li><a href="contact.php">Kontakti</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
+            <li><a href="quotes.php">Thenie</a></li>
         </ul>
 
         <div class="nav-buttons">
@@ -277,6 +195,12 @@ a:hover{
                     <span style="color:white;">Miresevjen,</span>
                     <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                 </span>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="profile.php" class="profile-link">
+                        <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+                    </a>
+                <?php endif; ?>
 
                 <?php if($_SESSION['is_admin'] == 1): ?>
                     <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
@@ -305,25 +229,6 @@ a:hover{
         </div>
     </nav>
 </header>
-
-<h2 style="text-align:center;">Shto Thenie te Re</h2>
-<form class="form-quotes" action="" method="POST" enctype="multipart/form-data">
-
-    <?php if(!empty($error_message)): ?>
-        <div class="error-message"><?= $error_message ?></div>
-    <?php endif; ?>
-
-    <label>Thenie:</label>
-    <textarea name="thenje_text" rows="4"><?= isset($_POST['thenje_text']) ? htmlspecialchars($_POST['thenje_text']) : '' ?></textarea>
-
-    <label>Autor:</label>
-    <input type="text" name="autori"  value="<?= isset($_POST['autori']) ? htmlspecialchars($_POST['autori']) : '' ?>">
-
-    <label>Foto Autor:</label>
-    <input type="file" name="autor_img" accept="image/*">
-
-    <button type="submit" name="submit">Shto Thenie</button>
-</form>
 
 
 <h2 style="text-align:center;">Lista e Thenieve</h2>
@@ -380,7 +285,7 @@ a:hover{
                 <li><a href="about.php">Rreth Nesh</a></li>
                 <li><a href="Reports.php">Raportimet</a></li>
                 <li><a href="contact.php">Kontakti</a></li>
-                <li><a href="quotes.php">Thenje</a></li>
+                <li><a href="quotes.php">Thenie</a></li>
             </ul>
         </div>
         <div class="footer-contact">

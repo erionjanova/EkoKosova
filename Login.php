@@ -2,6 +2,8 @@
 session_start();
 include_once('config.php');
 
+
+
 $error_message = ""; 
 
 if(isset($_POST['submit'])){
@@ -20,7 +22,7 @@ if(isset($_POST['submit'])){
         $user = $userQuery->fetch(PDO::FETCH_ASSOC);
 
         if(!$user){
-            $error_message = "⚠️ Username nuk ekziston.";
+            $error_message = "⚠️ Username nuk ekziston. Per shfrytezim te ketij aplikacioni duhet te krijoni nje llogari.";
         } else if(!password_verify($password, $user['password'])){
             $error_message = "⚠️ Fjalekalimi është i gabuar.";
         } else {
@@ -79,7 +81,7 @@ if(isset($_POST['submit'])){
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="Reports.php">Raportimet</a></li>
             <li><a href="contact.php">Kontakti</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
+            <li><a href="quotes.php">Thenie</a></li>
         </ul>
 
 
@@ -111,10 +113,69 @@ if(isset($_POST['submit'])){
             <button class="login-btn" type="submit" name="submit">Kyçu</button>
         </form>
 
-        <a href="#">Keni harruar fjalëkalimin tuaj?</a>
+        <?php session_start(); ?>
+        <a href="forgot_password.php?from=login">Keni harruar fjalekalimin tuaj?</a>
         <a href="Signup.php">Regjistrohu</a>
     </div>
 </div>
+
+
+<?php if(!empty($_SESSION['success_message'])): ?>
+<style>
+#popup-backdrop{
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#popup-box{
+    background: #d1e7dd;
+    color: #0f5132;
+    padding: 25px 35px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 400px;
+    font-weight: bold;
+}
+
+#popup-box button{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #0f5132;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#popup-box button:hover{ 
+    background-color: #0b3b26; 
+}
+</style>
+
+<div id="popup-backdrop">
+    <div id="popup-box">
+        <?= $_SESSION['success_message'] ?>
+        <br>
+        <button id="popup-ok">OK</button>
+    </div>
+</div>
+
+<script>
+document.getElementById('popup-ok').addEventListener('click', function(){
+    document.getElementById('popup-backdrop').style.display = 'none';
+});
+
+<?php unset($_SESSION['success_message']); ?>
+</script>
+<?php endif; ?>
+
+
 
     
 </body>

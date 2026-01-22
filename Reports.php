@@ -1,6 +1,23 @@
 <?php
 session_start();
+include 'config.php';
+
+$profile_pic = 'img/member.png'; // foto default
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $reportQuery = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+    $reportQuery->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $reportQuery->execute();
+    $user_pic = $reportQuery->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,15 +40,22 @@ session_start();
                 <li><a href="about.php">Rreth Nesh</a></li>
                 <li><a href="Reports.php" class="active">Raportimet</a></li>
                 <li><a href="contact.php">Kontakti</a></li>
-                <li><a href="quotes.php">Thenje</a></li>
+                <li><a href="quotes.php">Thenie</a></li>
             </ul>
     
             <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome">
-                    <span style="color:white;">Mirësevjen,</span>
+                    <span style="color:white;">Miresevjen,</span>
                     <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                 </span>
+
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="profile.php" class="profile-link">
+                        <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+                    </a>
+                <?php endif; ?>
 
                 <?php if($_SESSION['is_admin'] == 1): ?>
                     <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
@@ -65,7 +89,7 @@ session_start();
         <div>
             <h2>“Mbrojmë Natyrën, Përmirësojmë Kosovën”</h2>
             <p>Raporto ndotjet dhe ndihmo komunitetin të ketë një mjedis më të pastër</p>
-            <a href="Reports.html#reportform" class="btn">Raporto Tani</a>
+            <a href="Reports.php#reportform" class="btn">Raporto Tani</a>
         </div>
     </section>
 
@@ -170,7 +194,7 @@ session_start();
                     <li><a href="about.php">Rreth Nesh</a></li>
                     <li><a href="Reports.php">Raportimet</a></li>
                     <li><a href="contact.php">Kontakti</a></li>
-                    <li><a href="quotes.php">Thenje</a></li>
+                    <li><a href="quotes.php">Thenie</a></li>
                 </ul>
             </div>
             <div class="footer-contact">

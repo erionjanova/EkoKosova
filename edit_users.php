@@ -2,32 +2,45 @@
 session_start();
 include 'config.php';
 
-// Vetëm admin mund të hyjë
+// Vetëm admin mund të editojë
 if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
     header("Location: Login.php");
     exit;
 }
 
-// Merr ID nga URL
 if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
     header("Location: admin_dashboard.php");
     exit;
 }
 
+$profile_pic = 'img/member.png'; 
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user_pic = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
+
+
 $id = $_GET['id'];
 
-// Merr userin nga DB
-$stmt = $conn->prepare("SELECT id, name, username, email, is_admin FROM users WHERE id = :id");
-$stmt->bindParam(':id', $id);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$editQuery = $conn->prepare("SELECT id, name, username, email, is_admin FROM users WHERE id = :id");
+$editQuery->bindParam(':id', $id);
+$editQuery->execute();
+$user = $editQuery->fetch(PDO::FETCH_ASSOC);
 
 if(!$user){
     echo "Useri nuk ekziston.";
     exit;
 }
 
-// Nëse forma është dorëzuar
 if(isset($_POST['submit'])){
     $name = trim($_POST['name']);
     $username = trim($_POST['username']);
@@ -54,7 +67,6 @@ if(isset($_POST['submit'])){
 <title>Edit User | EkoKosova</title>
 <link rel="stylesheet" href="style.css">
 <style>
-
 .edit-container {
     max-width: 500px;
     margin: 50px auto;
@@ -120,41 +132,56 @@ if(isset($_POST['submit'])){
     font-weight: bold;
 }
 .back-link:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 </style>
 </head>
 <body>
 
 <header>
-    <nav class="navbar">
-        <div class="logo">🌿 EkoKosova</div>
+<nav class="navbar">
+    <div class="logo">🌿 EkoKosova</div>
 
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
-        <ul class="nav-links">
-            <li><a href="index.php">Ballina</a></li>
-            <li><a href="about.php">Rreth Nesh</a></li>
-            <li><a href="Reports.php">Raportimet</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
-            <li><a href="contact.php">Kontakti</a></li>
-            <li><a href="manage_users.php" class="active">Menaxho Userat</a></li>
-        </ul>
+    <ul class="nav-links">
+        <li><a href="index.php">Ballina</a></li>
+        <li><a href="about.php">Rreth Nesh</a></li>
+        <li><a href="Reports.php">Raportimet</a></li>
+        <li><a href="contact.php">Kontakti</a></li>
+        <li><a href="quotes.php">Thenje</a></li>
+    </ul>
 
-        <div class="nav-buttons">
-            <button class="login">Mirësevjen, <?= htmlspecialchars($_SESSION['username']) ?></button>
-            <form action="Logout.php" method="POST" style="display:inline;">
-                <button type="submit" class="translate">
-                    <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
-                </button>
-            </form>
-        </div>
-    </nav>
+    <div class="nav-buttons">
+        <span class="welcome">
+            <span style="color:white;">Mirësevjen,</span>
+            <strong style="color:white;"><?= htmlspecialchars($_SESSION['username']) ?></strong>
+        </span>
+
+        <?php if(isset($_SESSION['user_id'])): ?>
+            <a href="profile.php" class="profile-link">
+                <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+            </a>
+        <?php endif; ?>
+
+        <?php if($_SESSION['is_admin'] == 1): ?>
+            <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;text-decoration:none;border-radius:8px;transition:0.3s;">Dashboard</a>
+        <?php endif; ?>
+
+        <form action="Logout.php" method="POST" style="display:inline; margin-left:5px;">
+            <button type="submit" class="translate">
+                <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
+            </button>
+        </form>
+
+        <button class="translate" style="margin-left:5px;">🌐</button>
+    </div>
+</nav>
 </header>
 
 <main class="edit-container">
-    <a href="admin_dashboard.php" class="back-link">⬅ Kthehu ne Dashboard</a>
+    <a href="manage_users.php" class="back-link">⬅ Kthehu ne Dashboard</a>
     <h2>✏️ Edit User: <?= htmlspecialchars($user['username']) ?></h2>
 
     <form method="POST">
