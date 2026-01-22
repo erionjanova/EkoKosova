@@ -9,6 +9,11 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// Merr vleren e fotos aktuale per te fshire nese perdoruesi zgjedh
+$userQuery = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+$userQuery->execute([':id' => $user_id]);
+$user = $userQuery->fetch(PDO::FETCH_ASSOC);
+
 if (isset($_POST['submit'])) {
 
     $username = trim($_POST['username']);
@@ -16,6 +21,13 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $profile_pic = null;
 
+
+    if (isset($_POST['delete_photo_pic']) && $_POST['delete_photo_pic'] == '1') {
+        if (!empty($user['profile_pic']) && file_exists($user['profile_pic']) && $user['profile_pic'] != 'img/member.png') {
+            unlink($user['profile_pic']); // fshin file nga serveri
+        }
+        $profile_pic = 'img/member.png'; // vendos default foton
+    }
 
     if (!empty($password)) {
         if (
@@ -31,7 +43,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-// kjo sherben per ngarkim te fotos                   // kjo eshte nese ska ndodh ndoje gabim gjate ngarkimit
+    // kjo sherben per ngarkim te fotos                   // kjo eshte nese ska ndodh ndoje gabim gjate ngarkimit
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === 0) {
         $allowed_types = ['image/jpeg','image/png','image/gif','image/avif']; // formin nje list me tipin e fotove te lejuara per upload
 
@@ -42,6 +54,7 @@ if (isset($_POST['submit'])) {
             move_uploaded_file($_FILES['profile_pic']['tmp_name'], $filename); // tmp_name perdoret per me rujt files ne php
             $profile_pic = $filename;
         }
+        
     }
 
     $checkUsername = $conn->prepare("SELECT id FROM users WHERE username = :username AND id != :id");
@@ -81,7 +94,6 @@ if (isset($_POST['submit'])) {
         exit;
     }
 
-    // kontrollojme nese emaili eshte shkruar i plote pa mungese te simbolit @ dhe pjeses mbrapa @gmail.com psh
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error_message'] = "⚠️ Email-i duhet te kete format te sakte.";
         header("Location: update_profile.php");
