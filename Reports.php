@@ -34,35 +34,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
         $description = trim($_POST['description']);
 
         if ($name == "" || $email == "" || $city == "" || $type == "" || $description == "") {
-            $error = "Ju lutem plotësoni të gjitha fushat ⚠️";
+            $error = "Ju lutem plotesoni te gjitha fushat ⚠️";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = "Email-i nuk është valid ❌";
+            $error = "Email-i nuk eshte valid ❌";
         }
         $email = trim($_POST['email']);
 
-/* Kontrollo që email-i i shkruar përputhet me email-in e user-it në databazë */
+/* Kontrollo qe email-i i shkruar perputhet me email-in e user-it ne databaze */
 $stmtUser = $conn->prepare("SELECT email FROM users WHERE id = :id LIMIT 1");
 $stmtUser->execute([':id' => $user_id]);
 $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
 $userEmail = $userData['email'] ?? '';
 
 if ($email != $userEmail) {
-    $error = "Email-i nuk përputhet me email-in tuaj në sistem ❌";
+    $error = "Email-i nuk perputhet me email-in tuaj ne sistem ❌";
 }
 
-
-        /* FOTO */
-       $photoName = null;
+/* FOTO */
+$photoName = null;
 
 /* FOTO OBLIGATIVE */
 if (empty($_FILES['photo']['name'])) {
-    $error = "Duhet të ngarkoni patjetër një foto ❌";
+    $error = "Duhet te ngarkoni patjeter nje foto ❌";
 } else {
     $photoName = time() . "_" . basename($_FILES['photo']['name']);
     $target = "uploads/" . $photoName;
 
     if (!move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
-        $error = "Gabim gjatë ngarkimit të fotos ❌";
+        $error = "Gabim gjate ngarkimit te fotos ❌";
     }
 }
 
@@ -83,16 +82,14 @@ if (empty($_FILES['photo']['name'])) {
                 ':description' => $description,
                 ':photo' => $photoName
             ])) {
-                $success = "Raporti u dërgua me sukses ✅";
+                $success = "Raporti u dergua me sukses ✅";
             } else {
-                $error = "Gabim gjatë ruajtjes së raportit ❌";
+                $error = "Gabim gjate ruajtjes se raportit ❌";
             }
         }
     }
 }
-/* =========================
-   RAPORTET E FUNDIT
-========================= */
+
 $latestReports = $conn->prepare("
     SELECT name, city, type, description, photo, created_at
     FROM reports
@@ -188,8 +185,8 @@ $reports = $latestReports->fetchAll(PDO::FETCH_ASSOC);
 
 <section class="hero">
     <div>
-        <h2>“Mbrojmë Natyrën, Përmirësojmë Kosovën”</h2>
-        <p>Raporto ndotjet dhe ndihmo komunitetin të ketë një mjedis më të pastër</p>
+        <h2>“Mbrojme Natyren, Permiresojme Kosoven”</h2>
+        <p>Raporto ndotjet dhe ndihmo komunitetin te kete nje mjedis me të pastër</p>
         <a href="Reports.php#reportform" class="btn">Raporto Tani</a>
     </div>
 </section>

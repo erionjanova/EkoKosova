@@ -13,7 +13,7 @@ if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
     exit;
 }
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -28,7 +28,6 @@ if(isset($_SESSION['user_id'])){
     }
 }
 
-
 $id = $_GET['id'];
 
 $editQuery = $conn->prepare("SELECT id, name, username, email, is_admin FROM users WHERE id = :id");
@@ -41,25 +40,43 @@ if(!$user){
     exit;
 }
 
+$alert_msg = '';
+
 if(isset($_POST['submit'])){
     $name = trim($_POST['name']);
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
-    $userQuery = $conn->prepare("UPDATE users SET name=:name, username=:username, email=:email, is_admin=:is_admin WHERE id=:id");
-    $userQuery->bindParam(':name', $name);
-    $userQuery->bindParam(':username', $username);
-    $userQuery->bindParam(':email', $email);
-    $userQuery->bindParam(':is_admin', $is_admin);
-    $userQuery->bindParam(':id', $id);
-    $userQuery->execute();
+    // Kontrollo nese username ekziston tek userat tjere
+    $checkUser = $conn->prepare("SELECT id FROM users WHERE username = :username AND id != :id");
+    $checkUser->execute([':username'=>$username, ':id'=>$id]);
+    if($checkUser->rowCount() > 0){
+        $alert_msg = "Ky username është përdorur më parë!";
+    }
 
-    header("Location: manage_users.php");
-    exit;
+    // Kontrollo nese email ekziston tek userat tjere
+    $checkEmail = $conn->prepare("SELECT id FROM users WHERE email = :email AND id != :id");
+    $checkEmail->execute([':email'=>$email, ':id'=>$id]);
+    if($checkEmail->rowCount() > 0){
+        $alert_msg = "Ky email është përdorur më parë!";
+    }
+
+    // Nese nuk ka gabime, update
+    if(empty($alert_msg)){
+        $userQuery = $conn->prepare("UPDATE users SET name=:name, username=:username, email=:email, is_admin=:is_admin WHERE id=:id");
+        $userQuery->bindParam(':name', $name);
+        $userQuery->bindParam(':username', $username);
+        $userQuery->bindParam(':email', $email);
+        $userQuery->bindParam(':is_admin', $is_admin);
+        $userQuery->bindParam(':id', $id);
+        $userQuery->execute();
+
+        header("Location: manage_users.php?updated=1");
+        exit;
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,11 +151,20 @@ if(isset($_POST['submit'])){
 .back-link:hover {
     text-decoration: none;
 }
+
+/* Alert */
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
 </style>
 </head>
-<body>
-
-<header>
+<body><header>
 <nav class="navbar">
     <div class="logo">🌿 EkoKosova</div>
 
@@ -184,15 +210,24 @@ if(isset($_POST['submit'])){
     <a href="manage_users.php" class="back-link">⬅ Kthehu ne Dashboard</a>
     <h2>✏️ Edit User: <?= htmlspecialchars($user['username']) ?></h2>
 
+    <?php if($alert_msg): ?>
+        <div class="alert"><?= $alert_msg ?></div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 6000);
+        </script>
+    <?php endif; ?>
+
     <form method="POST">
         <label>Emri:</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
+        <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>">
 
         <label>Username:</label>
-        <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" required>
+        <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>">
 
         <label>Email:</label>
-        <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+        <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>">
 
         <label>
             <input type="checkbox" name="is_admin" <?= $user['is_admin'] ? 'checked' : '' ?>> Admin
@@ -215,7 +250,7 @@ if(isset($_POST['submit'])){
                 <li><a href="about.php">Rreth Nesh</a></li>
                 <li><a href="Reports.php">Raportimet</a></li>
                 <li><a href="contact.php">Kontakti</a></li>
-                <li><a href="quotes.php">Thenje</a></li>
+                <li><a href="quotes.php">Thenie</a></li>
             </ul>
         </div>
         <div class="footer-contact">

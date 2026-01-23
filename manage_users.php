@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
     exit;
 }
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -49,57 +49,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-
-/* HEADER */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    background-color: rgb(27, 79, 47);
-    color: white;
-    padding: 10px 20px;
-}
-
-.navbar .logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.nav-links {
-    display: flex;
-    gap: 15px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-wrap: wrap;
-}
-
-.nav-links li a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-
-.nav-links li a:hover {
-    background: rgba(255,255,255,0.2);
-}
-
-.nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.nav-profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 /* MAIN CONTENT */
@@ -271,67 +220,18 @@ body {
     color: #333;
 }
 
-/* FOOTER */
-.footer {
-    background-color: rgb(27, 79, 47);
-    color: #fff;
-    padding: 40px 20px 20px 20px;
-}
-
-.footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-about, .footer-links, .footer-contact {
-    flex: 1 1 250px;
-    margin-bottom: 20px;
-}
-
-.footer h3, .footer h4 {
-    margin-bottom: 15px;
-}
-
-.footer p, .footer a {
-    font-size: 14px;
-    color: #fff;
-    text-decoration: none;
-}
-
-.footer-links ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 10px;
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
-}
-
-.footer-bottom {
-    text-align: center;
-    border-top: 1px solid #ffffff50;
-    padding-top: 15px;
-    margin-top: 20px;
-    font-size: 13px;
-    color: #ffffffaa;
-}
 
 /* MEDIA QUERIES */
 @media (max-width: 1024px) {
-    .h2 { font-size: 28px; }
-    .user-table {
+.h2{ 
+    font-size: 28px; 
+}
+.user-table{ 
     width: 100%;
     border-collapse: collapse;
 }
 
-.user-table th, .user-table td {
+.user-table th, .user-table td{
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: center;
@@ -339,29 +239,59 @@ body {
 }
 
 @media (max-width: 768px) {
-    .user-table {
-        width: 100%;
-        font-size: 12px; /* ngushton tekstin */
-    }
 
-    .user-table th, .user-table td {
-        padding: 5px 4px; /* ul padding */
-    }
+.user-table {
+    width: 100%;
+    font-size: 12px; /* ngushton tekstin */
+}
+.user-table th, .user-table td {
+    padding: 5px 4px; /* ul padding */
+}
 
-    .user-table img {
-        width: 25px;
-        height: 25px;
-    }
+.user-table img {
+    width: 25px;
+    height: 25px;
+}
 
-    .user-table a.btn {
-        padding: 3px 6px;
-        font-size: 10px;
-    }
+.user-table a.btn {
+    padding: 3px 6px;
+    font-size: 10px;
+}
 
-    .h2 { font-size: 24px; }
-    .navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .nav-links { flex-direction: column; width: 100%; }
-    .nav-buttons { flex-wrap: wrap; }
+.h2{ 
+    font-size: 24px; 
+}
+   
+.footer {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-container {
+  align-items: center;
+  text-align: center;
+}
+
+.footer-links,
+.footer-contact {
+  align-self: stretch;  
+  text-align: center;     
+}
+
+.footer-links ul {
+  padding: 0;
+  margin: 0;
+}
+
+.footer-bottom {
+  margin-top: 10px;   
+  padding-top: 6px;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
 }
 
 @media (max-width: 480px) {
@@ -474,7 +404,7 @@ body {
 <table class="user-table">
     <tr>
         <th>ID</th>
-        <th>Foto</th> <!-- Kolona e re -->
+        <th>Foto</th> 
         <th>Emri</th>
         <th>Username</th>
         <th>Email</th>
@@ -486,7 +416,7 @@ body {
     <tr>
         <td><?= $row['id'] ?></td>
         <td>
-            <img src="<?= $row['profile_pic'] ? htmlspecialchars($row['profile_pic']) : 'img/default-avatar.png' ?>" 
+            <img src="<?= $row['profile_pic'] ? htmlspecialchars($row['profile_pic']) : 'uploads/member.png' ?>" 
                  alt="Foto Profili" style="width:40px;height:40px;border-radius:50%;">
         </td>
         <td><?= htmlspecialchars($row['name']) ?></td>
@@ -522,7 +452,7 @@ body {
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h3>⚠️ Veprim i ndaluar</h3>
-                <p>Nuk mund ta fshini llogarinë tuaj.</p>
+                <p style="color:black;">Nuk mund ta fshini llogarinë tuaj.</p>
                 <button class="btn cancel">OK</button>
             </div>
         </div>

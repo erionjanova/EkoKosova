@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];

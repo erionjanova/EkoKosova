@@ -12,6 +12,20 @@ if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
     exit;
 }
 
+$profile_pic = 'uploads/member.png';
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT profile_pic FROM users WHERE id=:id");
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user_pic = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
 $id = intval($_GET['id']);
 
 // Merr thënien ekzistuese
@@ -23,35 +37,52 @@ if(!$quote){
     echo "Thënia nuk ekziston.";
     exit;
 }
-
 if(isset($_POST['submit'])){
     $thenje_text = trim($_POST['thenje_text']);
     $autori = trim($_POST['autori']);
     $autor_img = $quote['autor_img'];
+    $error_message = "";
 
-    if(isset($_FILES['autor_img']) && $_FILES['autor_img']['error'] == 0){
-        $ext = pathinfo($_FILES['autor_img']['name'], PATHINFO_EXTENSION);
-        $filename = uniqid() . "." . $ext;
-        $target = "uploads/" . $filename;
+    // Kontrollo nëse fusha e thënies është bosh
+    if(empty($thenje_text) && empty($autori)){
+        $error_message = "⚠️ Ju lutem shkruani thenien dhe emrin e autorit!";
+    }
+    // Vetëm thënia bosh
+    elseif(empty($thenje_text)){
+        $error_message = "⚠️ Ju lutem shkruani thenien!";
+    }
+    // Vetëm autori bosh
+    elseif(empty($autori)){
+        $error_message = "⚠️ Ju lutem shkruani emrin e autorit!";
+    } 
+    else {
+        // Ngarkimi i fotos së re (opsionale)
+        if(isset($_FILES['autor_img']) && $_FILES['autor_img']['error'] == 0){
+            $ext = pathinfo($_FILES['autor_img']['name'], PATHINFO_EXTENSION);
+            $filename = uniqid() . "." . $ext;
+            $target = "uploads/" . $filename; // folderi ekziston
 
-        if(!is_dir('uploads')){
-            mkdir('uploads', 0777, true);
+            if(move_uploaded_file($_FILES['autor_img']['tmp_name'], $target)){
+                if($autor_img && file_exists($autor_img)){
+                    unlink($autor_img);
+                }
+                $autor_img = $target;
+            } else {
+                $error_message = "⚠️ Ndodhi një gabim gjatë ngarkimit të fotos.";
+            }
         }
 
-        if(move_uploaded_file($_FILES['autor_img']['tmp_name'], $target)){
-            if($autor_img && file_exists($autor_img)){
-                unlink($autor_img);
-            }
-            $autor_img = $target;
+        // Bëj update vetëm nëse nuk ka gabime
+        if(empty($error_message)){
+            $update = $conn->prepare("UPDATE quotes SET thenje_text=?, autori=?, autor_img=? WHERE id=?");
+            $update->execute([$thenje_text, $autori, $autor_img, $id]);
+
+            header("Location: konfigurimet.php?updated=1");
+            exit;
         }
     }
-
-    $update = $conn->prepare("UPDATE quotes SET thenje_text=?, autori=?, autor_img=? WHERE id=?");
-    $update->execute([$thenje_text, $autori, $autor_img, $id]);
-
-    header("Location: konfigurimet.php?updated=1");
-    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -134,40 +165,79 @@ img.preview{
 .back-link:hover {
     text-decoration: underline;
 }
+
+.error-message {
+        max-width: 400px;
+        margin: 15px auto;
+        padding: 15px 20px;
+        background-color: #f8d7da; 
+        color: #842029;
+        border-left: 5px solid #f5c2c7;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: fadeIn 0.5s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
-
 <header>
-    <nav class="navbar">
-        <div class="logo">🌿 EkoKosova</div>
+<nav class="navbar">
+    <div class="logo">🌿 EkoKosova</div>
 
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
-        <ul class="nav-links">
-            <li><a href="index.php">Ballina</a></li>
-            <li><a href="about.php">Rreth Nesh</a></li>
-            <li><a href="Reports.php">Raportimet</a></li>
-            <li><a href="quotes.php">Thenje</a></li>
-            <li><a href="contact.php">Kontakti</a></li>
-            <li><a href="konfigurimet.php" class="active">Menaxho Theniet</a></li>
-        </ul>
+    <ul class="nav-links">
+        <li><a href="index.php">Ballina</a></li>
+        <li><a href="about.php">Rreth Nesh</a></li>
+        <li><a href="Reports.php">Raportimet</a></li>
+        <li><a href="contact.php">Kontakti</a></li>
+        <li><a href="quotes.php">Thenie</a></li>
+    </ul>
 
-        <div class="nav-buttons">
-            <button class="login">Mirësevjen, <?= htmlspecialchars($_SESSION['username']) ?></button>
-            <form action="Logout.php" method="POST" style="display:inline;">
-                <button type="submit" class="translate">
-                    <img src="img/logout.png" style="width:20px;">
-                </button>
-            </form>
-        </div>
-    </nav>
+    <div class="nav-buttons">
+        <span class="welcome">
+            <span style="color:white;">Miresevjen,</span>
+            <strong style="color:white;"><?= htmlspecialchars($_SESSION['username']) ?></strong>
+        </span>
+
+        <?php if(isset($_SESSION['user_id'])): ?>
+            <a href="profile.php" class="profile-link">
+                <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+            </a>
+        <?php endif; ?>
+
+        <?php if($_SESSION['is_admin'] == 1): ?>
+            <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;text-decoration:none;border-radius:8px;transition:0.3s;">Dashboard</a>
+        <?php endif; ?>
+
+        <form action="Logout.php" method="POST" style="display:inline; margin-left:5px;">
+            <button type="submit" class="translate">
+                <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
+            </button>
+        </form>
+
+        <button class="translate" style="margin-left:5px;">🌐</button>
+    </div>
+</nav>
 </header>
+
 
 <main class="edit-container">
     <a href="konfigurimet.php" class="back-link">⬅ Kthehu te Lista e Thenieve</a>
     <h2>✏️ Edit Thenien</h2>
+
+        <?php if(!empty($error_message)): ?>
+    <div class="error-message"><?= $error_message ?></div>
+<?php endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
         <label>Thënie:</label>
@@ -188,6 +258,8 @@ img.preview{
 
         <input type="submit" name="submit" value="Ruaj Ndryshimet">
     </form>
+
+
 </main>
 
 <footer class="footer">

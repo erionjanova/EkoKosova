@@ -4,6 +4,8 @@ body {
   background-color: #f0f8f0;
   margin: 0;
   font-family: Arial, sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .navbar {
@@ -38,12 +40,15 @@ body {
   gap: 35px;
   margin: 0;
   padding: 0;
+  flex-wrap: nowrap;
+  
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
   font-size: 18px;
+  flex-wrap: wrap;
   transition: color 0.3s;
 }
 
@@ -193,21 +198,11 @@ button.translate:hover {
 }
 
 .reports-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
-    margin: auto;
-}
-
-/* CARD */
-.reports-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Qëndroni gjithmonë në mes */
-    gap: 20px; /* hapësira mes kartave */
+    justify-content: center;
+    gap: 20px; /* shto për hapësirë mes kartave */
 }
-
 .report-card {
     flex: 0 1 300px; /* karta ka gjerësinë fikse, por mund të ulet pak në ekran të vogël */
     background-color: #f8f8f8;
@@ -243,7 +238,7 @@ button.translate:hover {
 
 
 
-/* About.html */
+/* About.php */
 .hero-about {
     background: url('img/SliderFoto2.avif') center/cover no-repeat;
     height: 50vh;
@@ -349,7 +344,7 @@ button.translate:hover {
 }
 
 
-/* Reports.html */
+/* Reports.php */
 .hero {
   background: url('img/SliderFoto3.avif');
   background-position: center;
@@ -381,7 +376,7 @@ button.translate:hover {
   justify-content: center;
 }
 
-.card {
+.report-card {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -391,16 +386,16 @@ button.translate:hover {
   text-align: center;
 }
 
-.card:hover {
+.report-card:hover {
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   transition-delay: 0.2s;
 }
 
-.card h3 {
+.report-card h3 {
   color: #2e7d32;
 }
 
-.card p {
+.report-card p {
   font-size: 16px;
   margin-top: 10px;
 }
@@ -460,7 +455,7 @@ button.translate:hover {
   font-size: 15px;
 }
 
-#submit{
+#submit {
   background-color: #2c7a2c;
   color: #ffffff;
   padding: 12px 20px;
@@ -468,7 +463,8 @@ button.translate:hover {
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  margin-left: 235px;
+  display: block;
+  margin: 20px auto 0;
 }
 
 #submit:hover{
@@ -589,7 +585,7 @@ button.translate:hover {
 }
 
 
-/* Quotes.html */
+/* Quotes.php */
 
 .hero-quotes {
   background: url('img/natyra.avif');
@@ -726,8 +722,6 @@ button.translate:hover {
     background-color: white;
     color: black;
 }
-
-
 
 /*Sign-Up*/
 .signup-container {
@@ -869,64 +863,239 @@ button.translate:hover {
 }
 
 
-/*Responsive*/
-@media screen and (max-width: 768px) {
-  .menu-icon {
-    display: block;
-  }
+/* Responsive */
 
-  .nav-links, .nav-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    margin-top: 10px;
-    overflow: hidden;
-    max-height: 0;
-  }
+/* Tablet 769px–1023px */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+ .navbar { 
+        padding: 10px 20px; 
+        flex-wrap: wrap;
+    }
 
-  #menu-toggle:checked ~ .nav-links,
-  #menu-toggle:checked ~ .nav-buttons {
-    max-height: 500px; 
-  }
+    .menu-icon { 
+        display: block; 
+        cursor: pointer;
+        font-size: 28px;
+        color: white;
+    }
 
-  .nav-links a {
-    font-size: 18px;
-    padding: 8px 0;
-  }
+    .nav-links, .nav-buttons { 
+        flex-direction: column; 
+        width: 100%; 
+        max-height: 0; 
+        overflow: hidden; 
+        transition: max-height 0.3s ease;
+    }
 
-  .nav-buttons {
-    gap: 10px;
-    margin-bottom: 10px;
-  }
+    #menu-toggle:checked ~ .nav-links,
+    #menu-toggle:checked ~ .nav-buttons { 
+        max-height: 700px; 
+    }
 
-  .navbar {
-    padding: 10px 20px;
-  }
+    .nav-links li { 
+        margin: 4px 0; 
+        text-align: center; 
+    }
 
-  #submit{
-    margin-left: 110px;
-  }
+    .nav-links a { 
+        display: block; 
+        font-size: 18px;
+        padding: 10px 0; 
+        color: white; 
+        text-decoration: none;
+    }
 
-  .footer-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+    .nav-buttons { 
+        margin-top: 10px; 
+        gap: 10px; 
+        align-items: center;
+    }
 
-  .footer-about,
-  .footer-links,
-  .footer-contact {
-    margin: -30px;
-    margin-top: -55px;
-  }
+    .nav-buttons form, .nav-buttons a, .nav-buttons button { 
+        width: 100%; 
+        text-align: center; 
+        margin: 5px 0; 
+    }
 
-  .footer-links ul {
-    padding: 10px;
-  }
-
-  .footer-links li {
-    margin-bottom: 8px;
-  }
+    .nav-profile-pic {
+        width: 40px;
+        height: 40px;
+    }
+    .hero-slider{ 
+      height: 400px; 
+    }
+    .caption h1{ 
+      font-size: 38px; 
+    }
+    .caption p{ 
+      font-size: 16px; 
+    }
+    .report-card{ 
+      flex: 1 1 45%; 
+      max-width: 45%; 
+      min-height: 250px; 
+    }
+    .report-card img{ 
+      height: 150px; 
+    }
+    .report-card h4{ 
+      font-size: 0.9rem; 
+    }
+    .report-card p{ 
+      font-size: 12px; 
+    }
+    .report-card small{ 
+      font-size: 11px; 
+    }
+    .f-box, .report-card, .tip-card, .team-member, .quote-card{ 
+      flex: 1 1 45%; 
+      max-width: 45%; 
+    }
+    .cards, .team-cards, .reports-row, .tips-container, .quotes-container{ 
+      gap: 20px; 
+    }
+    .login-card, .signup-card, .report-form{ 
+      width: 90%; padding: 25px; 
+    }
+    .footer-container{ 
+      flex-direction: column; 
+      align-items: center; 
+      text-align: center; 
+    }
 }
 
+
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+    .navbar { 
+        padding: 10px 20px; 
+        flex-wrap: wrap; /* për të lejuar elementët të ulen */
+    }
+
+    .menu-icon { 
+        display: block; 
+        cursor: pointer;
+        font-size: 28px;
+        color: white;
+    }
+
+    .nav-links, .nav-buttons { 
+        flex-direction: column; 
+        width: 100%; 
+        max-height: 0; 
+        overflow: hidden; 
+        transition: max-height 0.3s ease; /* animim butë */
+    }
+
+    /* kur hamburger është i klikuar */
+    #menu-toggle:checked ~ .nav-links,
+    #menu-toggle:checked ~ .nav-buttons { 
+        max-height: 500px; 
+    }
+
+    .nav-links li { 
+        margin: 3px 0; 
+        text-align: center; 
+    }
+
+    .nav-links a { 
+        display: block; 
+        font-size: 16px; 
+        padding: 4px 0; 
+        color: white; 
+        text-decoration: none;
+    }
+
+    .nav-buttons { 
+        margin-top: 10px; 
+        gap: 3px; 
+    }
+
+    /* opsionale: bëj logout button dhe profile të duken më mirë */
+    .nav-buttons form, .nav-buttons a, .nav-buttons button { 
+        width: 100%; 
+        text-align: center; 
+        margin: 5px 0; 
+    }
+.hero-slider{ 
+  height: 350px; 
+}
+.caption h1{
+  font-size: 28px; 
+}
+.caption p{ 
+  font-size: 14px;
+}
+.reports-row{
+    gap: 10px;
+    justify-content: center;
+  }
+
+.report-card{
+  flex: 1 1 95%;
+  max-width: 95%;
+  min-height: 200px;
+  padding: 15px;
+}
+
+.report-card img{
+  height: 120px;
+}
+
+.report-card h4 {
+    font-size: 0.85rem;
+  }
+
+.report-card p {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+.report-card small {
+    font-size: 10px;
+  }
+
+.f-box, .report-card, .tip-card, .team-member, .quote-card{ 
+  flex: 1 1 90%; 
+  max-width: 90%; 
+}
+.cards, .team-cards, .reports-row, .tips-container, .quotes-container{ 
+  gap: 15px;
+}
+.login-card, .signup-card, .report-form{ 
+  width: 95%; 
+  padding: 20px; 
+}
+ 
+.footer {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-container {
+  align-items: center;
+  text-align: center;
+}
+
+.footer-links,
+.footer-contact {
+  align-self: stretch;  
+  text-align: center;     
+}
+
+.footer-links ul {
+  padding: 0;
+  margin: 0;
+}
+
+.footer-bottom {
+  margin-top: 10px;   
+  padding-top: 6px;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+}

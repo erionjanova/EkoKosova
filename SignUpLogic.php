@@ -59,14 +59,14 @@ if(isset($_POST['submit'])){
     $is_admin = 0;
 
     // Perpunimi i fotos se profilit
-    $profile_pic = 'img/member.png'; // default
+    $profile_pic = 'uploads/member.png'; // default
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === 0) {
         $allowed_types = ['image/jpeg','image/png','image/gif','image/avif']; // formin nje list me tipin e fotove te lejuara per upload
 
         if (in_array($_FILES['profile_pic']['type'], $allowed_types)) {
             $ext = pathinfo($_FILES['profile_pic']['name'], PATHINFO_EXTENSION); // e merr edhe extension e file psh .png , .jpg.
 
-            $filename = 'img/profile_' . $user_id . '_' . time() . '.' . $ext;
+            $filename = 'uploads/profile_' . $user_id . '_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['profile_pic']['tmp_name'], $filename); // tmp_name perdoret per me rujt files ne php
             $profile_pic = $filename;
         }

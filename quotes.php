@@ -171,6 +171,22 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     text-align: center;
 }
 
+.manage-quote-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #2E7D32;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.manage-quote-btn:hover {
+    background-color: #1b5e20;
+}
+
 @media screen and (max-width:768px){
     .dashboard-container {
         flex-direction: column;
@@ -246,7 +262,7 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 <section class="hero-quotes">
     <div>
         <h2 style="font-size: 45px;">Inspirim për Mbrojtjen e Mjedisit</h2>
-        <p>Fjalë që na kujtojnë rëndësinë e natyrës dhe përgjegjësinë tonë</p>
+        <h3>Fjalë që na kujtojnë rëndësinë e natyrës dhe përgjegjësinë tonë</h3>
     </div>
 </section>
 
@@ -256,10 +272,14 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     <div class="quotes-container">
         <?php if(!empty($quotes)): ?>
             <?php foreach($quotes as $q): ?>
-                <div class="quote-card">
+               <div class="quote-card">
                     <img src="<?= $q['autor_img'] ? $q['autor_img'] : 'img/member.png' ?>" alt="autor">
                     <p>"<?= htmlspecialchars($q['thenje_text']) ?>"</p>
                     <span>- <?= htmlspecialchars($q['autori']) ?></span>
+
+                    <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+                        <a href="konfigurimet.php#quote-<?= $q['id'] ?>" class="manage-quote-btn">Menaxho Thënie</a>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

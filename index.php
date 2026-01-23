@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-$profile_pic = 'img/member.png';
+$profile_pic = 'uploads/member.png';
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -17,9 +17,6 @@ if(isset($_SESSION['user_id'])){
     }
 }
 
-/* =========================
-   RAPORTET E FUNDIT
-========================= */
 $latestReports = $conn->prepare("
     SELECT name, city, type, description, photo, created_at
     FROM reports
@@ -149,7 +146,7 @@ $reports = $latestReports->fetchAll(PDO::FETCH_ASSOC);
                 <?php if(!empty($report['photo'])): ?>
                     <img src="uploads/<?php echo htmlspecialchars($report['photo']); ?>">
                 <?php else: ?>
-                    <img src="img/no-image.png">
+                    <img src="uploads/member.png">
                 <?php endif; ?>
 
                 <h4>

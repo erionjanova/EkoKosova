@@ -23,10 +23,10 @@ if (isset($_POST['submit'])) {
 
 
     if (isset($_POST['delete_photo_pic']) && $_POST['delete_photo_pic'] == '1') {
-        if (!empty($user['profile_pic']) && file_exists($user['profile_pic']) && $user['profile_pic'] != 'img/member.png') {
+        if (!empty($user['profile_pic']) && file_exists($user['profile_pic']) && $user['profile_pic'] != 'uploads/member.png') {
             unlink($user['profile_pic']); // fshin file nga serveri
         }
-        $profile_pic = 'img/member.png'; // vendos default foton
+        $profile_pic = 'uploads/member.png'; // vendos default foton
     }
 
     if (!empty($password)) {

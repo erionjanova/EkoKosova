@@ -29,7 +29,7 @@ $qutoesQuery = $conn->query("SELECT * FROM quotes ORDER BY id ASC");
 $quotes = $qutoesQuery->fetchAll(PDO::FETCH_ASSOC);
 
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -172,15 +172,80 @@ a:hover{
 }
 .modal .btn.cancel:hover{ background:#95a5a6; }
 
+.footer {
+    background-color: rgb(27, 79, 47);
+    color: #ffffff;
+    padding: 40px 20px 20px 20px;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-about, .footer-links, .footer-contact {
+    flex: 1 1 250px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 992px) {
+    table {
+        width: 100%;
+        font-size: 12px; 
+    }
+
+    table th, table td {
+        padding: 5px 4px; 
+    }
+
+    table img {
+        width: 25px;
+        height: 25px;
+    }
+
+    table a.btn {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+    .footer-container {
+        flex-direction: column; 
+        align-items: flex-start;
+        text-align: left;
+        margin-top: 30px;
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        flex: 1 1 100%; 
+        margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+        padding-left: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 8px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+}
+
 
 @media (max-width: 768px) {
     table {
         width: 100%;
-        font-size: 12px; /* ngushton tekstin */
+        font-size: 12px; 
     }
 
     table th, table td {
-        padding: 5px 4px; /* ul padding */
+        padding: 5px 4px; 
     }
 
     table img {
@@ -275,6 +340,9 @@ a:hover{
         </div>
     </nav>
 </header>
+
+
+
 
 
 <h2 style="text-align:center;">Lista e Thenieve</h2>

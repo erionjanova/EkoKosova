@@ -10,7 +10,7 @@ if(!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1){
 
 $result = $conn->query("SELECT id, name, username, email, is_admin FROM users");
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -157,45 +157,63 @@ body {
 
 /* Responsive për dashboard dhe footer */
 @media screen and (max-width: 992px) {
-    .dashboard-container {
-        padding: 25px 15px;
+ .dashboard-buttons {
+        flex-direction: column;   /* nga horizontal -> vertical */
+        align-items: center;      /* qendërso butonat */
+        gap: 15px;                /* hapsirë mes butonave */
     }
 
     .dashboard-buttons .btn {
-        padding: 12px 20px;
-        font-size: 14px;
+        width: 100%;              /* çdo button zë të gjithë gjerësinë */
+        max-width: 300px;         /* kufizo gjerësinë maksimale */
+        text-align: center;
+        padding: 12px 0;          /* më pak padding horizontal */
+        font-size: 14px;          /* më e vogël në telefon */
+    }
+
+    .dashboard-container {
+        padding: 20px 15px;       /* pak padding në mobile */
+        margin-top: 50px;         /* largësia nga lart */
     }
 }
 
 @media screen and (max-width: 768px) {
-    .dashboard-container {
-        padding: 20px 10px;
-        margin-top: 50px;
-        margin-bottom: 50px;
-        
-    }
 
     .dashboard-buttons {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column;   /* nga horizontal -> vertical */
+        align-items: center;      /* qendërso butonat */
+        gap: 15px;                /* hapsirë mes butonave */
     }
 
     .dashboard-buttons .btn {
-        width: 100%;
-        max-width: 300px;
+        width: 100%;              /* çdo button zë të gjithë gjerësinë */
+        max-width: 300px;         /* kufizo gjerësinë maksimale */
+        text-align: center;
+        padding: 12px 0;          /* më pak padding horizontal */
+        font-size: 14px;          /* më e vogël në telefon */
     }
 
-.footer-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+    .dashboard-container {
+        padding: 20px 15px;       /* pak padding në mobile */
+        margin-top: 50px;         /* largësia nga lart */
+    }
+    
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 
   .footer-about,
-  .footer-links,
-  .footer-contact {
+  .footer-links{
     margin: -30px;
     margin-top: -55px;
+  }
+
+  .footer-contact{
+    margin: -30px;
+    margin-top: -20px;
   }
 
   .footer-links ul {
@@ -208,36 +226,42 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-    .dashboard-label {
-        font-size: 18px;
-    }
+.dashboard-label {
+    font-size: 18px;
+}
 
-    .dashboard-buttons .btn {
-        font-size: 13px;
-        padding: 10px 15px;
-    }
+.dashboard-buttons .btn {
+    font-size: 13px;
+    padding: 10px 15px;
+}
 
 .footer-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
-  }
+}
 
-  .footer-about,
-  .footer-links,
-  .footer-contact {
+.footer-about,
+.footer-links{
     margin: -30px;
     margin-top: -55px;
-  }
-
-  .footer-links ul {
-    padding: 10px;
-  }
-
-  .footer-links li {
-    margin-bottom: 8px;
-  }
 }
+
+.footer-contact{
+    margin: -30px;
+    margin-top: -20px;
+}
+
+.footer-links ul {
+    padding: 10px;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+}
+
+
 
 </style>
 </head>

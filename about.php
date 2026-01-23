@@ -2,7 +2,7 @@
 session_start();
 include 'config.php';
 
-$profile_pic = 'img/member.png'; 
+$profile_pic = 'uploads/member.png'; 
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
@@ -116,17 +116,17 @@ if(isset($_SESSION['user_id'])){
         <h2>Ekipi Ynë</h2>
         <div class="team-cards">
             <div class="team-member">
-                <img src="img/member.png" alt="Member">
+                <img src="uploads/member.png" alt="Member">
                 <h3>Erion Janova</h3>
                 <p>Founder & CEO</p>
             </div>
             <div class="team-member">
-                <img src="img/member.png" alt="Member">
+                <img src="uploads/member.png" alt="Member">
                 <h3>Florent Cakaj</h3>
                 <p>Community Manager</p>
             </div>
             <div class="team-member">
-                <img src="img/member.png" alt="Member">
+                <img src="uploads/member.png" alt="Member">
                 <h3>Drin Berisha</h3>
                 <p>Environmental Specialist</p>
             </div>

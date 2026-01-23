@@ -8,6 +8,7 @@ if(!isset($_SESSION['user_id'])){
 }
 
 $user_id = $_SESSION['user_id'];
+$profile_pic = 'uploads/member.png';
 
 $userQuery = $conn->prepare("SELECT id, name, username, email, profile_pic FROM users WHERE id = :id");
 $userQuery->bindParam(':id', $user_id, PDO::PARAM_INT);
@@ -18,6 +19,22 @@ $error_message = $_SESSION['error_message'] ?? ''; // e merr vleren ose mbetet b
 $success_message = $_SESSION['success_message'] ?? '';
 
 unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet refresh faqja nuk shfaqet prap error message ose success message sepse perdoren vetem nje here ne sesion
+
+
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+    $queryPic = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+    $queryPic->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $queryPic->execute();
+    $user_pic = $queryPic->fetch(PDO::FETCH_ASSOC);
+
+    if($user_pic && $user_pic['profile_pic']){
+        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="sq">
@@ -27,7 +44,26 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
 <title>Profili im | EkoKosova</title>
 <link rel="stylesheet" href="style.css">
 <style>
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left:0px;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+
 .profile-container {
+    width: 95%;
     max-width: 900px;
     margin: 40px auto;
     padding: 25px;
@@ -37,12 +73,6 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
     font-family: Arial, sans-serif;
 }
 
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-left:300px;
-}
 
 .profile-header img {
     width: 120px;
@@ -50,6 +80,10 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #2e7d32;
+}
+
+.profile-header div{
+    width: 100%;
 }
 
 .profile-header div h2 {
@@ -144,6 +178,65 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
     cursor: pointer;
     font-weight: bold;
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .profile-container {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .profile-header {
+        gap: 30px;
+    }
+
+    .profile-header img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .profile-header h2 {
+        font-size: 22px;
+    }
+
+    .profile-header p {
+        font-size: 15px;
+    }
+
+    .settings-form input[type=text],
+    .settings-form input[type=password],
+    .settings-form input[type=file] {
+        font-size: 15px;
+    }
+
+    .nav-profile-pic {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .profile-container {
+        padding: 15px;
+    }
+
+    .profile-header img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .settings-form input[type=text],
+    .settings-form input[type=password],
+    .settings-form input[type=file] {
+        font-size: 14px;
+    }
+
+    .popup-box {
+        width: 90%;
+        font-size: 16px;
+    }
+}
 </style>
 </head>
 <body>
@@ -162,12 +255,23 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome" style="color:white;">Miresevjen, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></span>
+
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <a href="profile.php" class="profile-link">
+                        <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+                    </a>
+                <?php endif; ?>
+
                 <?php if($_SESSION['is_admin'] == 1): ?>
                     <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;border-radius:8px; text-decoration:none;">Dashboard</a>
                 <?php endif; ?>
-                <form action="Logout.php" method="POST" style="display:inline; margin-left:5px;">
-                    <button type="submit"><img src="img/logout.png" style="width:20px;"></button>
+
+                <form action="Logout.php" method="POST" class="translate" style="display:inline; margin-left:5px;">
+                    <button type="submit" class="translate">
+                        <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
+                    </button>
                 </form>
+    
             <?php else: ?>
                 <button class="login"><a href="Login.php" style="color:white;">Kyçu</a></button>
                 <button class="signup"><a href="Signup.php" style="color:white;">Regjistrohu</a></button>
@@ -181,7 +285,7 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
     <a href="index.php" class="back-link">⬅ Kthehu prapa</a>
 
     <div class="profile-header">
-        <img src="<?= $user['profile_pic'] ? htmlspecialchars($user['profile_pic']) : 'img/default-avatar.png' ?>" alt="Foto Profili">
+        <img src="<?= $user['profile_pic'] ? htmlspecialchars($user['profile_pic']) : 'uploads/member.png' ?>" alt="Foto Profili">
         <div>
             <!-- per mbrojtjen e kodit nga hackeret parandalim te XSS attack(Cross Site Scripting) -->
             <h2><?= htmlspecialchars($user['name']) ?></h2>  
@@ -215,15 +319,34 @@ unset($_SESSION['error_message'], $_SESSION['success_message']); // kur tbohet r
     </div>
 </div>
 
+
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-about">
             <h3 class="logo">🌿 EkoKosova</h3>
             <p>“Mbrojmë Natyrën, Përmirësojmë Kosovën”</p>
         </div>
+        <div class="footer-links">
+            <h4>Navigimi</h4>
+            <ul>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="Reports.php">Raportimet</a></li>
+                <li><a href="contact.php">Kontakti</a></li>
+                <li><a href="quotes.php">Thenie</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Kontakti</h4>
+            <p>Email: info@ekokosova.com</p>
+            <p>Tel: +383 44 123 456</p>
+            <p>Prishtinë, Kosovë</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 EkoKosova. Të gjitha të drejtat e rezervuara.</p>
     </div>
 </footer>
-
 <!-- Kontrollon kodin e html qe me u shfaq vetem kur ka mesazhin e suksesit -->
 <?php if($success_message): ?> 
 <div class="popup-overlay">
