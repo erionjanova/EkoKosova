@@ -177,31 +177,70 @@ button.translate:hover {
 }
 
 /* Raportimet e fundit */
+/* =========================
+   LATEST REPORTS
+========================= */
+
 .latest-reports {
-  padding: 60px 20px;
-  text-align: center;
+    padding: 60px 20px;
+    background: #f4f6f8;
+}
+
+.latest-reports h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
 }
 
 .reports-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* CARD */
+.reports-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Qëndroni gjithmonë në mes */
+    gap: 20px; /* hapësira mes kartave */
 }
 
 .report-card {
-  width: 28%;
-  background: white;
-  padding-bottom: 15px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex: 0 1 300px; /* karta ka gjerësinë fikse, por mund të ulet pak në ekran të vogël */
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 350px; /* lartësi uniforme */
 }
 
 .report-card img {
-  width: 100%;
-  border-radius: 12px 12px 0 0;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
+
+.report-card h4 {
+    margin: 10px;
+    font-size: 1.1rem;
+}
+
+.report-card p {
+    margin: 0 10px 10px 10px;
+    flex-grow: 1;
+}
+
+.report-card small {
+    margin: 0 10px 10px 10px;
+    color: #555;
+}
+
+
 
 
 /* About.html */
@@ -508,6 +547,47 @@ button.translate:hover {
   border-radius: 10px;
   margin-bottom: 15px;
 }
+/* ALERT MODERNE ME GJERËSI TË FORMËS */
+.alert {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin: 0 auto 20px auto; /* Qendra horizontale */
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    animation: fadeIn 0.5s ease-in-out;
+    max-width: 600px; /* E njëjta gjerësi si forma */
+    width: 100%; /* Për mobile */
+    box-sizing: border-box;
+}
+
+.alert svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.alert-success {
+    background-color: #e6f4ea;
+    color: #1f7a3d;
+    border: 1px solid #b7e1c3;
+}
+
+.alert-error {
+    background-color: #fdecea;
+    color: #b72c2c;
+    border: 1px solid #f5c6cb;
+}
+
+/* Animacion i lehtë për shfaqjen */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 
 /* Quotes.html */
 

@@ -21,45 +21,87 @@ $success = $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $city = $_POST['city'];
-    $type = $_POST['type'];
-    $description = $_POST['description'];
-    $user_id = $_SESSION['user_id'] ?? null;
+    if (!isset($_SESSION['user_id'])) {
+        $error = "Duhet të jeni të kyçur për të raportuar ❌";
+    } else {
 
-    $photoName = null;
+        $user_id = $_SESSION['user_id'];
 
-    if (!empty($_FILES['photo']['name'])) {
-        $photoName = time() . "_" . basename($_FILES['photo']['name']);
-        $targetPath = "uploads/" . $photoName;
+        $name = trim($_POST['name']);
+        $email = trim($_POST['email']);
+        $city = trim($_POST['city']);
+        $type = trim($_POST['type']);
+        $description = trim($_POST['description']);
 
-        if(!move_uploaded_file($_FILES['photo']['tmp_name'], $targetPath)){
-            $error = "Gabim gjatë ngarkimit të fotos ❌";
+        if ($name == "" || $email == "" || $city == "" || $type == "" || $description == "") {
+            $error = "Ju lutem plotësoni të gjitha fushat ⚠️";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "Email-i nuk është valid ❌";
         }
+        $email = trim($_POST['email']);
+
+/* Kontrollo që email-i i shkruar përputhet me email-in e user-it në databazë */
+$stmtUser = $conn->prepare("SELECT email FROM users WHERE id = :id LIMIT 1");
+$stmtUser->execute([':id' => $user_id]);
+$userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
+$userEmail = $userData['email'] ?? '';
+
+if ($email != $userEmail) {
+    $error = "Email-i nuk përputhet me email-in tuaj në sistem ❌";
+}
+
+
+        /* FOTO */
+       $photoName = null;
+
+/* FOTO OBLIGATIVE */
+if (empty($_FILES['photo']['name'])) {
+    $error = "Duhet të ngarkoni patjetër një foto ❌";
+} else {
+    $photoName = time() . "_" . basename($_FILES['photo']['name']);
+    $target = "uploads/" . $photoName;
+
+    if (!move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
+        $error = "Gabim gjatë ngarkimit të fotos ❌";
     }
+}
 
-    if (empty($error)) {
-        $stmt = $conn->prepare("
-            INSERT INTO reports (user_id, name, email, city, type, description, photo)
-            VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
-        ");
 
-        if ($stmt->execute([
-            ':user_id' => $user_id,
-            ':name' => $name,
-            ':email' => $email,
-            ':city' => $city,
-            ':type' => $type,
-            ':description' => $description,
-            ':photo' => $photoName
-        ])) {
-            $success = "Raporti u dërgua me sukses ✅";
-        } else {
-            $error = "Gabim gjatë dërgimit të raportit ❌";
+
+        if (empty($error)) {
+            $stmt = $conn->prepare("
+                INSERT INTO reports (user_id, name, email, city, type, description, photo)
+                VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
+            ");
+
+            if ($stmt->execute([
+                ':user_id' => $user_id,
+                ':name' => $name,
+                ':email' => $email,
+                ':city' => $city,
+                ':type' => $type,
+                ':description' => $description,
+                ':photo' => $photoName
+            ])) {
+                $success = "Raporti u dërgua me sukses ✅";
+            } else {
+                $error = "Gabim gjatë ruajtjes së raportit ❌";
+            }
         }
     }
 }
+/* =========================
+   RAPORTET E FUNDIT
+========================= */
+$latestReports = $conn->prepare("
+    SELECT name, city, type, description, photo, created_at
+    FROM reports
+    ORDER BY created_at DESC
+    LIMIT 3
+");
+$latestReports->execute();
+$reports = $latestReports->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -157,22 +199,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
 
     <!-- Mesazhet e suksesit ose gabimit -->
     <?php if(!empty($success)): ?>
-        <div class="success-message"><?php echo $success; ?></div>
-    <?php endif; ?>
+    <div class="alert alert-success">
+        <!-- Ikonë ✅ -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <?php echo $success; ?>
+    </div>
+<?php endif; ?>
 
-    <?php if(!empty($error)): ?>
-        <div class="error-message"><?php echo $error; ?></div>
-    <?php endif; ?>
+<?php if(!empty($error)): ?>
+    <div class="alert alert-error">
+        <!-- Ikonë ❌ -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <?php echo $error; ?>
+    </div>
+<?php endif; ?>
+
 
     <form class="report-form" method="POST" enctype="multipart/form-data">
         <label for="name">Emri Juaj</label>
-        <input type="text" id="name" name="name" placeholder="Shkruaj emrin tuaj" required>
+        <input type="text" id="name" name="name" placeholder="Shkruaj emrin tuaj">
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Shkruaj emailin tuaj" required>
+        <input type="text" id="email" name="email" placeholder="Shkruaj emailin tuaj">
 
         <label for="city">Qyteti</label>
-        <select id="city" name="city" required>
+        <select id="city" name="city">
             <option value="">Zgjedh qytetin</option>
             <option value="prishtina">Prishtina</option>
             <option value="gjilan">Gjilan</option>
@@ -181,45 +236,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
         </select>
 
         <label for="type">Lloji i Ndotjes</label>
-        <select id="type" name="type" required>
+        <select id="type" name="type">
             <option value="">Zgjedh llojin</option>
             <option value="ajri">Ajri</option>
-            <option value="ujit">Ujit</option>
-            <option value="tokes">Tokës</option>
-            <option value="zhurmes">Zhurmës</option>
+            <option value="ujit">Uji</option>
+            <option value="tokes">Toka</option>
         </select>
 
         <label for="description">Përshkrimi i Ndotjes</label>
-        <textarea id="description" name="description" placeholder="Përshkruaj ndotjen..." required></textarea>
+        <textarea id="description" name="description" placeholder="Përshkruaj ndotjen..."></textarea>
 
         <label for="photo">Ngarko Foto</label>
         <input type="file" id="photo" name="photo" accept="image/*">
 
         <button type="submit" name="submit_report" id="submit">Dërgo Raportin</button>
     </form>
+    
+
 </section>
 
 <section class="latest-reports" id="shikoraporte">
-    <h2>Raportet e Fundit</h2>
-    <div class="reports-row">
-        <div class="report-card">
-            <img src="">
-            <h4></h4>
-            <p></p>
-        </div>
-        <div class="report-card">
-            <img src="">
-            <h4></h4>
-            <p></p>
-        </div>
-        <div class="report-card">
-            <img src="">
-            <h4></h4>
-            <p></p>
-        </div>
-    </div>
-</section>
+  <h2>Raportimet e Fundit</h2>
 
+  <div class="reports-row">
+
+    <?php if(count($reports) > 0): ?>
+        <?php foreach($reports as $report): ?>
+            <div class="report-card">
+
+                <?php if(!empty($report['photo'])): ?>
+                    <img src="uploads/<?php echo htmlspecialchars($report['photo']); ?>">
+                <?php else: ?>
+                    <img src="img/no-image.png">
+                <?php endif; ?>
+
+                <h4>
+                    <?php echo ucfirst(htmlspecialchars($report['type'])); ?> –
+                    <?php echo ucfirst(htmlspecialchars($report['city'])); ?>
+                </h4>
+
+                <p>
+                    <?php echo htmlspecialchars(substr($report['description'], 0, 90)); ?>...
+                </p>
+
+                <small>
+                    <?php echo htmlspecialchars($report['name']); ?> •
+                    <?php echo date('d.m.Y', strtotime($report['created_at'])); ?>
+                </small>
+
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p style="text-align:center;">Nuk ka ende raporte 📭</p>
+    <?php endif; ?>
+
+  </div>
+</section>
 <section class="tips-section">
     <h2 id="keshilla">Këshilla Mjedisore për Shëndetin</h2>
     <div class="tips-container">
@@ -273,5 +345,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
         <p>&copy; 2025 EkoKosova. Të gjitha të drejtat e rezervuara.</p>
     </div>
 </footer>
+
+<script>
+  // zgjedh te gjitha alert-at
+document.querySelectorAll('.alert').forEach(alert => {
+    setTimeout(() => {
+        alert.style.opacity = '0';
+        alert.style.transform = 'translateY(-10px)';
+
+        // pas 0.5s (koha e transition), hiq alert nga DOM
+        setTimeout(() => {
+            alert.remove();
+        }, 500);
+    }, 3000); // 3 sekonda para se te filloje zhdukjeja
+});
+
+
+</script>
 </body>
 </html>

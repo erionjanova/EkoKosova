@@ -16,10 +16,19 @@ if(isset($_SESSION['user_id'])){
         $profile_pic = htmlspecialchars($user_pic['profile_pic']);
     }
 }
+
+/* =========================
+   RAPORTET E FUNDIT
+========================= */
+$latestReports = $conn->prepare("
+    SELECT name, city, type, description, photo, created_at
+    FROM reports
+    ORDER BY created_at DESC
+    LIMIT 3
+");
+$latestReports->execute();
+$reports = $latestReports->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +54,7 @@ if(isset($_SESSION['user_id'])){
             <li><a href="quotes.php">Thenie</a></li>
         </ul>
 
-        <div class="nav-buttons">
+  <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome">
                     <span style="color:white;">Miresevjen,</span>
@@ -86,7 +95,6 @@ if(isset($_SESSION['user_id'])){
     </nav>
 </header>
 
-
 <!-- HERO SLIDER -->
 <section class="hero-slider">
 
@@ -121,67 +129,64 @@ if(isset($_SESSION['user_id'])){
 <!-- FEATURES -->
 <section class="features">
   <h2>Pse EkoKosova?</h2>
-  
   <div class="feature-grid">
-    <div class="f-box">
-      <h3>📸 Raportim i Shpejtë</h3>
-      <p>Ngarko foto dhe vendos lokacionin për raport të menjëhershëm.</p>
-    </div>
-    <div class="f-box">
-      <h3>🌍 Harta Interaktive</h3>
-      <p>Shiko raportimet në kohë reale në hartën e Kosovës.</p>
-    </div>
-    <div class="f-box">
-      <h3>⏳ Gjurmim i Statusit</h3>
-      <p>Shiko nëse raporti është zgjidhur apo në proces.</p>
-    </div>
+    <div class="f-box"><h3>📸 Raportim i Shpejtë</h3></div>
+    <div class="f-box"><h3>🌍 Harta Interaktive</h3></div>
+    <div class="f-box"><h3>⏳ Gjurmim i Statusit</h3></div>
   </div>
 </section>
 
 <!-- LATEST REPORTS -->
-<section class="latest-reports">
-  <h2>Raportet e Fundit</h2>
+<section class="latest-reports" id="shikoraporte">
+  <h2>Raportimet e Fundit</h2>
 
   <div class="reports-row">
-    <div class="report-card">
-      <img src="">
-      <h4></h4>
-      <p></p>
-    </div>
 
-    <div class="report-card">
-  <img src="">
-  <h4></h4>
-  <p></p>
-</div>
+    <?php if(count($reports) > 0): ?>
+        <?php foreach($reports as $report): ?>
+            <div class="report-card">
 
+                <?php if(!empty($report['photo'])): ?>
+                    <img src="uploads/<?php echo htmlspecialchars($report['photo']); ?>">
+                <?php else: ?>
+                    <img src="img/no-image.png">
+                <?php endif; ?>
 
-    <div class="report-card">
-      <img src="">
-      <h4></h4>
-      <p></p>
-    </div>
+                <h4>
+                    <?php echo ucfirst(htmlspecialchars($report['type'])); ?> –
+                    <?php echo ucfirst(htmlspecialchars($report['city'])); ?>
+                </h4>
+
+                <p>
+                    <?php echo htmlspecialchars(substr($report['description'], 0, 90)); ?>...
+                </p>
+
+                <small>
+                    <?php echo htmlspecialchars($report['name']); ?> •
+                    <?php echo date('d.m.Y', strtotime($report['created_at'])); ?>
+                </small>
+
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p style="text-align:center;">Nuk ka ende raporte 📭</p>
+    <?php endif; ?>
+
   </div>
 </section>
-
 
 <script>
 let slideIndex = 0;
 showSlides();
 function showSlides() {
-  let i;
   let slides = document.getElementsByClassName("slide");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
-  }
+  for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
   slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  slides[slideIndex-1].style.display = "block";  
+  if (slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex-1].style.display = "block";
   setTimeout(showSlides, 3800);
 }
 </script>
-
-
 
 <footer class="footer">
     <div class="footer-container">
@@ -210,5 +215,6 @@ function showSlides() {
         <p>&copy; 2025 EkoKosova. Të gjitha të drejtat e rezervuara.</p>
     </div>
 </footer>
+
 </body>
 </html>
