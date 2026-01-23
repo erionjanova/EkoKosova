@@ -72,9 +72,30 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="style.css">
 </head>
 <style>
+
+    .quotes-container {
+    display: flex;
+    flex-wrap: wrap; /* lejon që card-t të kalojnë në rreshta të rinj */
+    gap: 15px;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+
+/* Foto autorit responsive */
+.quote-card img {
+    width: 80px; /* zvogëlo për celular */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
     
 .form-quotes{ 
-    max-width:600px; 
+    width: 90%; /* zgjerohet në celular */
+    max-width: 600px;
     margin:30px auto; 
     background:#fff; 
     padding:20px; 
@@ -116,12 +137,13 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     z-index: 9999;
 }
 #success-popup .popup-content {
+    width: 90%;
+    max-width: 400px;
     background: #d1e7dd;
     color: #0f5132;
     padding: 25px 35px;
     border-radius: 10px;
     text-align: center;
-    max-width: 400px;
     font-weight: bold;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }

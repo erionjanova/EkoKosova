@@ -39,29 +39,110 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 <title>Menaxho Perdoruesit | Admin Dashboard</title>
 
 <style>
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: rgb(27, 79, 47);
+    color: white;
+    padding: 10px 20px;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* TITLE */
+.h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* BACK BUTTON */
 .back-btn {
     display: inline-block;
     margin: 20px auto;
     padding: 10px 20px;
-    background-color: #ffffff;
+    background-color: #fff;
     color: #2e7d32;
     text-decoration: none;
     font-weight: bold;
     border-radius: 8px;
     border: 2px solid #2e7d32;
     transition: 0.3s;
-    text-align: center;
 }
+
 .back-btn:hover {
     background-color: #2e7d32;
     color: white;
 }
 
+/* USER TABLE */
 .user-table {
-    width: 95%;
+    width: 100%;
     max-width: 1200px;
-    margin: 30px auto 50px auto;
     border-collapse: collapse;
     background: #fff;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -91,8 +172,8 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     text-decoration: none;
     margin: 0 2px;
     display: inline-block;
-    transition: 0.3s;
     font-weight: bold;
+    transition: 0.3s;
 }
 
 .user-table .edit {
@@ -111,105 +192,14 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     background: #da190b;
 }
 
-@media (max-width: 768px) {
-    .user-table th, .user-table td {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    .back-btn {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
+.user-table img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 25px 30px;
-    border-radius: 12px;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    animation: popIn 0.3s ease;
-}
-
-.modal-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-}
-
-.modal h3 {
-    color: #c0392b;
-    margin-bottom: 10px;
-}
-
-.modal p {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-}
-
-.modal .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.modal .btn.delete {
-    background-color: #f44336;
-    color: white;
-}
-
-.modal .btn.delete:hover {
-    background-color: #da190b;
-}
-
-.modal .btn.cancel {
-    background-color: green;
-    color: white;
-    border: none;
-}
-
-.modal .btn.cancel:hover {
-    background-color: #95a5a6;
-}
-
-.close {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #999;
-    transition: 0.3s;
-}
-
-.close:hover {
-    color: #333;
-}
-
-
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
@@ -223,7 +213,8 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 
 .modal-content {
     background: #fff;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
     margin: 15% auto;
     padding: 20px;
     border-radius: 10px;
@@ -232,27 +223,177 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
 
 .modal-content h3 {
     color: red;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .modal-content .btn {
-    background: #2e7d32;
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
+    border: none;
+    margin: 0 5px;
 }
 
-.modal-content .btn:hover {
-    background: #1b5e20;
+.modal-content .btn.delete {
+    background-color: #f44336;
+    color: white;
 }
 
-.user-table img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+.modal-content .btn.delete:hover {
+    background-color: #da190b;
 }
+
+.modal-content .btn.cancel {
+    background-color: green;
+    color: white;
+}
+
+.modal-content .btn.cancel:hover {
+    background-color: #95a5a6;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* FOOTER */
+.footer {
+    background-color: rgb(27, 79, 47);
+    color: #fff;
+    padding: 40px 20px 20px 20px;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-about, .footer-links, .footer-contact {
+    flex: 1 1 250px;
+    margin-bottom: 20px;
+}
+
+.footer h3, .footer h4 {
+    margin-bottom: 15px;
+}
+
+.footer p, .footer a {
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #ffffff50;
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #ffffffaa;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 1024px) {
+    .h2 { font-size: 28px; }
+    .user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+}
+
+@media (max-width: 768px) {
+    .user-table {
+        width: 100%;
+        font-size: 12px; /* ngushton tekstin */
+    }
+
+    .user-table th, .user-table td {
+        padding: 5px 4px; /* ul padding */
+    }
+
+    .user-table img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .user-table a.btn {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+
+    .h2 { font-size: 24px; }
+    .navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .nav-links { flex-direction: column; width: 100%; }
+    .nav-buttons { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+    .h2 { 
+        font-size: 20px; 
+    }
+
+    .user-table {
+        width: 100%;
+        font-size: 10px; 
+    }
+
+    .user-table th, .user-table td {
+        padding: 4px 5px;
+    }
+
+    .user-table img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .user-table a.btn {
+        padding: 2px 4px;
+        font-size: 8px;
+    }
+    .modal-content{ 
+        margin: 25% auto;
+        width: 95%; 
+    }
+}
+
+
 
 </style>
 
@@ -285,7 +426,6 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
-
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome">
@@ -327,7 +467,10 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     </nav>
 </header>
 
-<h2 style="text-align:center">👥 Menaxhimi i Perdoruesve</h2>
+
+<h1 class="h2" style="text-align:center">👥 Menaxhimi i Perdoruesve</h1>
+
+<main class="main-content">
 <table class="user-table">
     <tr>
         <th>ID</th>
@@ -357,7 +500,7 @@ $users = $userQuery->fetchAll(PDO::FETCH_ASSOC);
     </tr>
     <?php endforeach; ?>
 </table>
-
+    </main>
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-about">

@@ -171,6 +171,52 @@ a:hover{
     border:none;
 }
 .modal .btn.cancel:hover{ background:#95a5a6; }
+
+
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        font-size: 12px; /* ngushton tekstin */
+    }
+
+    table th, table td {
+        padding: 5px 4px; /* ul padding */
+    }
+
+    table img {
+        width: 25px;
+        height: 25px;
+    }
+
+    table a.btn {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    table {
+        width: 100%;
+        font-size: 10px; 
+    }
+
+    table th, .user-table td {
+        padding: 4px 5px;
+    }
+
+    table img {
+        width: 20px;
+        height: 20px;
+    }
+
+    table a.btn {
+        padding: 2px 4px;
+        font-size: 8px;
+    }
+}
+
 </style>
 </head>
 <body>

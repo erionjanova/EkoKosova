@@ -34,18 +34,43 @@ if(isset($_SESSION['user_id'])){
 <link rel="stylesheet" href="style.css"> 
 <style>
 
+/* Reset dhe setup bazik */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* footer gjithmonë në fund */
+}
+
+/* Main content zgjerohet për të shtyrë footer-in poshtë */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Dashboard me lartësi fikse dhe responsive */
 .dashboard-container {
     border: 3px solid #4CAF50; 
     padding: 30px 20px;
     border-radius: 10px;
     width: 100%;
     max-width: 1200px;
-    margin: 20px auto;
     background-color: #ffffff;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     box-sizing: border-box;
+    margin-top: 120px;
 }
 
+/* Dashboard label */
 .dashboard-label {
     text-align: center;
     font-size: 20px;
@@ -54,11 +79,12 @@ if(isset($_SESSION['user_id'])){
     margin-bottom: 20px; 
 }
 
+/* Buttons flex dhe responsive */
 .dashboard-buttons {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
-    flex-wrap: wrap; 
 }
 
 .dashboard-buttons .btn {
@@ -69,6 +95,7 @@ if(isset($_SESSION['user_id'])){
     font-weight: bold;
     border-radius: 8px;
     transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
 }
 
 .dashboard-buttons .btn:hover {
@@ -76,27 +103,142 @@ if(isset($_SESSION['user_id'])){
     box-shadow: 0 6px 10px rgba(0,0,0,0.3);
 }
 
-.close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
+/* Footer */
+.footer {
+    background-color: rgb(27, 79, 47);
+    color: #ffffff;
+    padding: 40px 20px 20px 20px;
 }
 
-.footer{
-    margin-top:88px;
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
 }
-@media screen and (max-width:768px){
+
+.footer-about,.footer-links,.footer-contact {
+    flex: 1 1 250px;
+    margin-bottom: 20px;
+}
+
+.footer h3, .footer h4 {
+    margin-bottom: 15px;
+}
+
+.footer p, .footer ul, .footer li, .footer a {
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #ffffff50;
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #ffffffaa;
+}
+
+/* Responsive për dashboard dhe footer */
+@media screen and (max-width: 992px) {
     .dashboard-container {
-        flex-direction: column;
-        align-items: center;
+        padding: 25px 15px;
     }
-    .dashboard-card {
-        width: 90%;
-    }
-    .user-table {
+
+    .dashboard-buttons .btn {
+        padding: 12px 20px;
         font-size: 14px;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .dashboard-container {
+        padding: 20px 10px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        
+    }
+
+    .dashboard-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+.footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-about,
+  .footer-links,
+  .footer-contact {
+    margin: -30px;
+    margin-top: -55px;
+  }
+
+  .footer-links ul {
+    padding: 10px;
+  }
+
+  .footer-links li {
+    margin-bottom: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+    .dashboard-label {
+        font-size: 18px;
+    }
+
+    .dashboard-buttons .btn {
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+
+.footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-about,
+  .footer-links,
+  .footer-contact {
+    margin: -30px;
+    margin-top: -55px;
+  }
+
+  .footer-links ul {
+    padding: 10px;
+  }
+
+  .footer-links li {
+    margin-bottom: 8px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -156,15 +298,17 @@ if(isset($_SESSION['user_id'])){
         </div>
     </nav>
 </header>
-<div class="dashboard-container">
-    <div class="dashboard-label">Quick Actions</div>
-    <div class="dashboard-buttons">
-        <a href="manage_users.php" class="btn">👥 Menaxho Userat</a>
-        <a href="manage_reports.php" class="btn">📄 Menaxho Raportimet</a>
-        <a href="manage_contacts.php" class="btn">📞 Menaxho Kontaktimet</a>
-        <a href="konfigurimet.php" class="btn">⚙️ Konfigurimet</a>
+<main class="main-content">
+    <div class="dashboard-container">
+        <div class="dashboard-label">Quick Actions</div>
+        <div class="dashboard-buttons">
+            <a href="manage_users.php" class="btn">👥 Menaxho Userat</a>
+            <a href="manage_reports.php" class="btn">📄 Menaxho Raportimet</a>
+            <a href="manage_contacts.php" class="btn">📞 Menaxho Kontaktimet</a>
+            <a href="konfigurimet.php" class="btn">⚙️ Konfigurimet</a>
+        </div>
     </div>
-</div>
+</main>
 
 
 <footer class="footer">
