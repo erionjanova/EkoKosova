@@ -262,6 +262,95 @@ body {
 }
 
 
+@media (min-width: 1440px) and (max-width: 1600px) {
+    table { font-size: 15px; width: 80%; }
+    th, td { padding: 10px 8px; }
+    td img { width: 40px; height: 40px; }
+    table a.btn { padding: 6px 12px; font-size: 13px; }
+ .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        margin-bottom: 0;
+    }
+
+    .footer h3.logo {
+        font-size: 24px;
+    }
+
+    .footer h4 {
+        font-size: 17px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 15px;
+    }
+
+    .footer-bottom {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1440px) and (max-width: 1600px) {
+    table { font-size: 15px; width: 80%; }
+    th, td { padding: 10px 8px; }
+    td img { width: 40px; height: 40px; }
+    table a.btn { padding: 6px 12px; font-size: 13px; }
+ .footer-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        margin-bottom: 0;
+    }
+
+    .footer h3.logo {
+        font-size: 24px;
+    }
+
+    .footer h4 {
+        font-size: 17px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 15px;
+    }
+
+    .footer-bottom {
+        font-size: 14px;
+    }
+}
+
+
+/* MacBook 16" (3072px x 1920px Retina, scale ~2) => normal CSS 1600px+ */
+@media (min-width: 1601px) {
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .footer h3.logo {
+        font-size: 26px;
+    }
+
+    .footer h4 {
+        font-size: 18px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 16px;
+    }
+
+    .footer-bottom {
+        font-size: 15px;
+    }
+}
+
 
 </style>
 </head>

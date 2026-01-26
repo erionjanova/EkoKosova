@@ -55,15 +55,31 @@ if(isset($_POST['submit'])){
     elseif(empty($description)){
         $error_message = "⚠️ Ju lutem shkruani përshkrimin!";
     }
-    else{ 
+    else{
+
+    // Kontroll nese email-i i shkruar i perket nje user-i tjeter
+    $checkUserEmail = $conn->prepare("
+        SELECT id 
+        FROM users 
+        WHERE email = ? AND id != ?
+    ");
+    $checkUserEmail->execute([
+        $email,
+        $_SESSION['user_id']
+    ]);
+
+    if ($checkUserEmail->rowCount() > 0) {
+        $error_message = "⚠️ Ky email i përket një përdoruesi tjetër në sistem!";
+    }
+
     // Ngarko foto e re nëse ka
-    if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0){
+    if (empty($error_message) && isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
         $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
         $filename = uniqid() . "." . $ext;
         $target = "uploads/" . $filename;
 
-        if(move_uploaded_file($_FILES['photo']['tmp_name'], $target)){
-            if($photo && file_exists("uploads/".$photo)){
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
+            if ($photo && file_exists("uploads/".$photo)) {
                 unlink("uploads/".$photo);
             }
             $photo = $filename;
@@ -72,13 +88,18 @@ if(isset($_POST['submit'])){
         }
     }
 
-    if(empty($error_message)){
-        $update = $conn->prepare("UPDATE reports SET name=?, email=?, city=?, type=?, description=?, photo=? WHERE id=?");
+    if (empty($error_message)) {
+        $update = $conn->prepare("
+            UPDATE reports 
+            SET name=?, email=?, city=?, type=?, description=?, photo=? 
+            WHERE id=?
+        ");
         $update->execute([$name, $email, $city, $type, $description, $photo, $id]);
         header("Location: manage_reports.php?updated=1");
         exit;
     }
 }
+
     } 
 
 ?>

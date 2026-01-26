@@ -73,7 +73,7 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <style>
 
-    .quotes-container {
+.quotes-container {
     display: flex;
     flex-wrap: wrap; /* lejon që card-t të kalojnë në rreshta të rinj */
     gap: 15px;
@@ -90,6 +90,17 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+}
+
+.quote-card p {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    word-wrap: break-word;   /* thyen fjalët e gjata */
+    overflow: hidden;        /* fsheh tekstin jashtë kartës */
+    display: -webkit-box;
+    -webkit-line-clamp: 10;   /* trego vetëm 3 rreshta */
+    -webkit-box-orient: vertical;
 }
 
     
@@ -172,8 +183,8 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .manage-quote-btn {
+    margin-top: auto; /* shtyn butonin në fund të kartës */
     display: inline-block;
-    margin-top: 10px;
     padding: 6px 12px;
     background-color: #2E7D32;
     color: #fff;

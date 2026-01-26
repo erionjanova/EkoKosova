@@ -964,13 +964,11 @@ button.translate:hover {
     }
 }
 
-
-
 /* Mobile */
 @media screen and (max-width: 768px) {
     .navbar { 
         padding: 10px 20px; 
-        flex-wrap: wrap; /* për të lejuar elementët të ulen */
+        flex-wrap: wrap;
     }
 
     .menu-icon { 
@@ -985,10 +983,9 @@ button.translate:hover {
         width: 100%; 
         max-height: 0; 
         overflow: hidden; 
-        transition: max-height 0.3s ease; /* animim butë */
+        transition: max-height 0.3s ease; 
     }
 
-    /* kur hamburger është i klikuar */
     #menu-toggle:checked ~ .nav-links,
     #menu-toggle:checked ~ .nav-buttons { 
         max-height: 500px; 
@@ -1012,90 +1009,89 @@ button.translate:hover {
         gap: 3px; 
     }
 
-    /* opsionale: bëj logout button dhe profile të duken më mirë */
     .nav-buttons form, .nav-buttons a, .nav-buttons button { 
         width: 100%; 
         text-align: center; 
         margin: 5px 0; 
     }
-.hero-slider{ 
-  height: 350px; 
-}
-.caption h1{
-  font-size: 28px; 
-}
-.caption p{ 
-  font-size: 14px;
-}
-.reports-row{
-    gap: 10px;
-    justify-content: center;
-  }
+    .hero-slider{ 
+      height: 350px; 
+    }
+    .caption h1{
+      font-size: 28px; 
+    }
+    .caption p{ 
+      font-size: 14px;
+    }
+    .reports-row{
+        gap: 10px;
+        justify-content: center;
+      }
 
-.report-card{
-  flex: 1 1 95%;
-  max-width: 95%;
-  min-height: 200px;
-  padding: 15px;
-}
+    .report-card{
+      flex: 1 1 95%;
+      max-width: 95%;
+      min-height: 200px;
+      padding: 15px;
+    }
 
-.report-card img{
-  height: 120px;
-}
+    .report-card img{
+      height: 120px;
+    }
 
-.report-card h4 {
-    font-size: 0.85rem;
-  }
+    .report-card h4 {
+        font-size: 0.85rem;
+      }
 
-.report-card p {
-    font-size: 12px;
-    margin-bottom: 8px;
-  }
+    .report-card p {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
 
-.report-card small {
-    font-size: 10px;
-  }
+    .report-card small {
+        font-size: 10px;
+      }
 
-.f-box, .report-card, .tip-card, .team-member, .quote-card{ 
-  flex: 1 1 90%; 
-  max-width: 90%; 
-}
-.cards, .team-cards, .reports-row, .tips-container, .quotes-container{ 
-  gap: 15px;
-}
-.login-card, .signup-card, .report-form{ 
-  width: 95%; 
-  padding: 20px; 
-}
- 
-.footer {
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .f-box, .report-card, .tip-card, .team-member, .quote-card{ 
+      flex: 1 1 90%; 
+      max-width: 90%; 
+    }
+    .cards, .team-cards, .reports-row, .tips-container, .quotes-container{ 
+      gap: 15px;
+    }
+    .login-card, .signup-card, .report-form{ 
+      width: 95%; 
+      padding: 20px; 
+    }
+    
+    .footer {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.footer-container {
-  align-items: center;
-  text-align: center;
-}
+    .footer-container {
+      align-items: center;
+      text-align: center;
+    }
 
-.footer-links,
-.footer-contact {
-  align-self: stretch;  
-  text-align: center;     
-}
+    .footer-links,
+    .footer-contact {
+      align-self: stretch;  
+      text-align: center;     
+    }
 
-.footer-links ul {
-  padding: 0;
-  margin: 0;
-}
+    .footer-links ul {
+      padding: 0;
+      margin: 0;
+    }
 
-.footer-bottom {
-  margin-top: 10px;   
-  padding-top: 6px;
-  width: 100%;
-  text-align: center;
-  border-top: 1px solid rgba(255,255,255,0.3);
-}
+    .footer-bottom {
+      margin-top: 10px;   
+      padding-top: 6px;
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.3);
+    }
 }

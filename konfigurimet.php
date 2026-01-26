@@ -53,31 +53,45 @@ if(isset($_SESSION['user_id'])){
 <title>Konfigurimet | EkoKosova</title>
 <link rel="stylesheet" href="style.css">
 <style>
-
-table{ 
-    width:80%; 
-    border-collapse:collapse; 
-    margin:30px auto; 
-    background:#fff; 
-    border-radius:10px; 
-    overflow:hidden; 
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-th, td{ 
-    padding:12px; 
-    text-align:center; 
-    border-bottom:1px solid #ddd;
+/* Contenti kryesor */
+main {
+    flex: 1; /* Merr pjesën tjetër të faqes */
 }
-th{ 
-    background:#2E7D32; 
-    color:#fff; 
-    text-transform:uppercase;
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    table-layout: fixed;
 }
-td img{ 
-    width:50px; 
-    height:50px; 
-    border-radius:50%; 
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+th {
+    background: #2E7D32;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 a{ 
     color:#2196F3; 
@@ -172,7 +186,9 @@ a:hover{
 }
 .modal .btn.cancel:hover{ background:#95a5a6; }
 
-.footer {
+
+/*Footer*/
+footer {
     background-color: rgb(27, 79, 47);
     color: #ffffff;
     padding: 40px 20px 20px 20px;
@@ -186,99 +202,241 @@ a:hover{
     margin: 0 auto;
 }
 
-.footer-about, .footer-links, .footer-contact {
+.footer-about,.footer-links,.footer-contact {
     flex: 1 1 250px;
     margin-bottom: 20px;
 }
 
-@media (max-width: 992px) {
-    table {
-        width: 100%;
-        font-size: 12px; 
-    }
+.footer h3, .footer h4 {
+    margin-bottom: 15px;
+}
 
-    table th, table td {
-        padding: 5px 4px; 
-    }
+.footer p, .footer ul, .footer li, .footer a {
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+}
 
-    table img {
-        width: 25px;
-        height: 25px;
-    }
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
 
-    table a.btn {
-        padding: 3px 6px;
-        font-size: 10px;
-    }
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #ffffff50;
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #ffffffaa;
+}
+
+@media (max-width: 480px) {
+    table { font-size: 10px; width: 100%; }
+    th, td { padding: 4px 5px; }
+    td img { width: 20px; height: 20px; }
+    table a.btn { padding: 2px 4px; font-size: 8px; }
+
     .footer-container {
-        flex-direction: column; 
-        align-items: flex-start;
-        text-align: left;
-        margin-top: 30px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .footer-about h3.logo { font-size: 16px; }
+    .footer-about p, .footer-links li, .footer-contact p { font-size: 12px; }
+    .footer-bottom { font-size: 11px; }
+}
+
+/* Mobile medium / tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px){
+    table { font-size: 12px; width: 100%; }
+    th, td { padding: 5px 4px; }
+    td img { width: 25px; height: 25px; }
+    table a.btn { padding: 3px 6px; font-size: 10px; }
+
+ .footer-container {
+        flex-direction: column; /* kolonat mbi njëra-tjetrën */
+        align-items: center;    /* qendër horizontale */
+        text-align: center;     /* qendër teksti */
+        gap: 15px;              /* hapësirë midis kolonave */
     }
 
     .footer-about, .footer-links, .footer-contact {
-        flex: 1 1 100%; 
-        margin-bottom: 20px;
+        flex: 1 1 100%;
+        margin-bottom: 15px;
     }
 
-    .footer-links ul {
-        padding-left: 0;
+    .footer h3.logo {
+        font-size: 20px;
+        margin-bottom: 10px;
     }
 
-    .footer-links li {
+    .footer h4 {
+        font-size: 16px;
         margin-bottom: 8px;
     }
 
+    .footer p, .footer li, .footer a {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
     .footer-bottom {
-        text-align: center;
         font-size: 13px;
         margin-top: 10px;
+        text-align: center;
     }
 }
 
+@media (min-width: 1280px) and (max-width: 1366px) {
 
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-        font-size: 12px; 
+    /* HEADER */
+    .navbar .logo { 
+        font-size: 28px; /* më e madhe */
+    }
+    .navbar ul.nav-links li a { 
+        font-size: 18px; 
+        padding: 10px 15px; 
+    }
+    .navbar .nav-buttons a, 
+    .navbar .nav-buttons button { 
+        font-size: 18px; 
+        padding: 12px 20px; 
     }
 
-    table th, table td {
-        padding: 5px 4px; 
+    /* FOOTER */
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-around; /* qendër dhe hapësirë */
+        align-items: flex-start;
+        gap: 40px;
     }
 
-    table img {
-        width: 25px;
-        height: 25px;
+    .footer-about, .footer-links, .footer-contact {
+        flex: 1 1 33%; /* kolonat më të gjera */
+        text-align: center; 
     }
 
-    table a.btn {
-        padding: 3px 6px;
-        font-size: 10px;
+    .footer h3.logo {
+        font-size: 32px; /* më e dukshme */
+    }
+
+    .footer h4 {
+        font-size: 22px; 
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .footer-bottom {
+        font-size: 16px;
+        padding-top: 20px;
+        margin-top: 20px;
+        text-align: center;
     }
 }
 
+@media (min-width: 540px) and (max-width: 1024px){
+    table { font-size: 12px; width: 95%; }
+    th, td { padding: 6px 5px; }
+    td img { width: 30px; height: 30px; }
+    table a.btn { padding: 4px 8px; font-size: 10px; }
 
-@media (max-width: 480px) {
-
-    table {
-        width: 100%;
-        font-size: 10px; 
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
     }
 
-    table th, .user-table td {
-        padding: 4px 5px;
+    .footer h3.logo { font-size: 20px; }
+    .footer h4 { font-size: 16px; }
+    .footer p, .footer li, .footer a { font-size: 14px; }
+    .footer-bottom { font-size: 13px; }
+}
+
+
+@media (min-width: 1440px) and (max-width: 1600px) {
+    table { font-size: 15px; width: 80%; }
+    th, td { padding: 10px 8px; }
+    td img { width: 40px; height: 40px; }
+    table a.btn { padding: 6px 12px; font-size: 13px; }
+ .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
     }
 
-    table img {
-        width: 20px;
-        height: 20px;
+    .footer-about, .footer-links, .footer-contact {
+        margin-bottom: 0;
     }
 
-    table a.btn {
-        padding: 2px 4px;
-        font-size: 8px;
+    .footer h3.logo {
+        font-size: 24px;
+    }
+
+    .footer h4 {
+        font-size: 17px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 15px;
+    }
+
+    .footer-bottom {
+        font-size: 14px;
+    }
+}
+
+/* MacBook 16" (3072px x 1920px Retina, scale ~2) => normal CSS 1600px+ */
+@media (min-width: 1601px) {
+    table { font-size: 16px; width: 80%; }
+    th, td { padding: 12px; }
+    td img { width: 50px; height: 50px; }
+    table a.btn { padding: 6px 12px; font-size: 14px; }
+  .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start; 
+        gap: 20px;
+        max-width: 1600px;
+    }
+
+    .footer-about, 
+    .footer-links, 
+    .footer-contact {
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    .footer h3.logo {
+        font-size: 24px;
+    }
+
+    .footer h4 {
+        font-size: 16px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 14px;
+    }
+
+    .footer-bottom {
+        font-size: 13px;
+        padding-top: 10px;
+        margin-top: 15px;
     }
 }
 
@@ -343,6 +501,8 @@ a:hover{
 
 
 
+<main>
+
 
 
 <h2 style="text-align:center;">Lista e Thenieve</h2>
@@ -372,7 +532,7 @@ a:hover{
 </tr>
 <?php endforeach; ?>
 </table>
-
+</main>
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
