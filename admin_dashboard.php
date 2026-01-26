@@ -226,73 +226,41 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-.dashboard-label {
-    font-size: 18px;
-}
-
-.dashboard-buttons .btn {
-    font-size: 13px;
-    padding: 10px 15px;
-}
-
-.footer-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.footer-about,
-.footer-links{
-    margin: -30px;
-    margin-top: -55px;
-}
-
-.footer-contact{
-    margin: -30px;
-    margin-top: -20px;
-}
-
-.footer-links ul {
-    padding: 10px;
-}
-
-.footer-links li {
-    margin-bottom: 8px;
-}
-}
-
-
-@media (min-width: 1440px) and (max-width: 1600px) {
-    table { font-size: 15px; width: 80%; }
-    th, td { padding: 10px 8px; }
-    td img { width: 40px; height: 40px; }
-    table a.btn { padding: 6px 12px; font-size: 13px; }
- .footer-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
+    .dashboard-label {
+        font-size: 18px;
     }
 
-    .footer-about, .footer-links, .footer-contact {
-        margin-bottom: 0;
+    .dashboard-buttons .btn {
+        font-size: 13px;
+        padding: 10px 15px;
     }
 
-    .footer h3.logo {
-        font-size: 24px;
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 
-    .footer h4 {
-        font-size: 17px;
+    .footer-about,
+    .footer-links{
+        margin: -30px;
+        margin-top: -55px;
     }
 
-    .footer p, .footer li, .footer a {
-        font-size: 15px;
+    .footer-contact{
+        margin: -30px;
+        margin-top: -20px;
     }
 
-    .footer-bottom {
-        font-size: 14px;
+    .footer-links ul {
+        padding: 10px;
+    }
+
+    .footer-links li {
+        margin-bottom: 8px;
     }
 }
+
 
 @media (min-width: 1440px) and (max-width: 1600px) {
     table { font-size: 15px; width: 80%; }
@@ -327,7 +295,7 @@ body {
 }
 
 
-/* MacBook 16" (3072px x 1920px Retina, scale ~2) => normal CSS 1600px+ */
+/* MacBook 16" 1600px+ */
 @media (min-width: 1601px) {
     .footer-container {
         flex-direction: row;

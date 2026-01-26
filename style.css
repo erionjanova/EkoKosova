@@ -955,7 +955,11 @@ button.translate:hover {
       gap: 20px; 
     }
     .login-card, .signup-card, .report-form{ 
-      width: 90%; padding: 25px; 
+      width: 90%; 
+      padding: 25px; 
+    }
+    .report-form input, .report-form textarea{
+      width: 95%;
     }
     .footer-container{ 
       flex-direction: column; 
@@ -1060,8 +1064,12 @@ button.translate:hover {
       gap: 15px;
     }
     .login-card, .signup-card, .report-form{ 
-      width: 95%; 
+      width: 90%; 
       padding: 20px; 
+    }
+
+    .report-form input, .report-form textarea{
+      width: 95%;
     }
     
     .footer {
@@ -1093,5 +1101,237 @@ button.translate:hover {
       width: 100%;
       text-align: center;
       border-top: 1px solid rgba(255,255,255,0.3);
+    }
+}
+
+@media screen and (max-width: 428px) {
+
+   .navbar { 
+        padding: 10px 20px; 
+        flex-wrap: wrap;
+    }
+
+    .menu-icon { 
+        display: block; 
+        cursor: pointer;
+        font-size: 28px;
+        color: white;
+    }
+
+    .nav-links, .nav-buttons { 
+        flex-direction: column; 
+        width: 100%; 
+        max-height: 0; 
+        overflow: hidden; 
+        transition: max-height 0.3s ease; 
+    }
+
+    #menu-toggle:checked ~ .nav-links,
+    #menu-toggle:checked ~ .nav-buttons { 
+        max-height: 500px; 
+    }
+
+    .nav-links li { 
+        margin: 3px 0; 
+        text-align: center; 
+    }
+
+    .nav-links a { 
+        display: block; 
+        font-size: 16px; 
+        padding: 4px 0; 
+        color: white; 
+        text-decoration: none;
+    }
+
+    .nav-buttons { 
+        margin-top: 10px; 
+        gap: 3px; 
+    }
+
+    .nav-buttons form, .nav-buttons a, .nav-buttons button { 
+        width: 100%; 
+        text-align: center; 
+        margin: 5px 0; 
+    }
+
+    .reports-row{
+        gap: 10px;
+        justify-content: center;
+      }
+
+    .report-card{
+      flex: 1 1 95%;
+      max-width: 95%;
+      min-height: 200px;
+      padding: 15px;
+    }
+
+    .report-card img{
+      height: 120px;
+    }
+
+    .report-card h4 {
+        font-size: 0.85rem;
+      }
+
+    .report-card p {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+    .report-card small {
+        font-size: 10px;
+      }
+
+    .f-box, .report-card, .tip-card, .team-member, .quote-card{ 
+      flex: 1 1 90%; 
+      max-width: 90%; 
+    }
+    .cards, .team-cards, .reports-row, .tips-container, .quotes-container{ 
+      gap: 15px;
+    }
+    .login-card, .signup-card, .report-form{ 
+      width: 90%; 
+      padding: 20px; 
+    }
+    .report-form input, .report-form textarea{
+      width: 95%;
+    }
+    .footer {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-container {
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer-links,
+    .footer-contact {
+      align-self: stretch;  
+      text-align: center;     
+    }
+
+    .footer-links ul {
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-bottom {
+      margin-top: 10px;   
+      padding-top: 6px;
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.3);
+    }
+  .hero .btn,
+  .hero .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 22px;
+    margin-top: 16px;
+  }
+
+  .hero h2,
+  .hero h2 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .hero p,
+  .hero p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 1440px) and (max-width: 1600px) {
+    .footer-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        margin-bottom: 0;
+    }
+
+    .footer h3.logo {
+        font-size: 24px;
+    }
+
+    .footer h4 {
+        font-size: 17px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 15px;
+    }
+
+    .footer-bottom {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1601px) {
+    table{ 
+      font-size: 16px; 
+      width: 80%; 
+    }
+    th, td{ 
+      padding: 12px; 
+    }
+    td img{ 
+      width: 50px; 
+      height: 50px; 
+    }
+    table a.btn{
+      padding: 6px 12px; 
+      font-size: 14px; 
+    }
+ .footer-container{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .footer h3.logo{
+        font-size: 26px;
+    }
+
+    .footer h4{
+        font-size: 18px;
+    }
+
+    .footer p, .footer li, .footer a{
+        font-size: 16px;
+    }
+
+    .footer-bottom{
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1366px){
+    footer.footer{ 
+        padding: 40px 25px; 
+    }
+    .footer-container{ 
+        gap: 20px; 
+    }
+    .footer h3.logo{ 
+        font-size: 20px; 
+    }
+    .footer h4{ 
+        font-size: 15px; 
+    }
+    .footer p, .footer li, .footer a{ 
+        font-size: 14px; 
+    }
+    .footer-bottom{ 
+        font-size: 12px; 
     }
 }

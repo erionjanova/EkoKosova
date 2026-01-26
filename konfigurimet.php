@@ -375,8 +375,8 @@ footer {
     table a.btn { padding: 6px 12px; font-size: 13px; }
  .footer-container {
         flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
     }
 
     .footer-about, .footer-links, .footer-contact {
@@ -406,37 +406,25 @@ footer {
     th, td { padding: 12px; }
     td img { width: 50px; height: 50px; }
     table a.btn { padding: 6px 12px; font-size: 14px; }
-  .footer-container {
+ .footer-container {
         flex-direction: row;
         justify-content: space-between;
-        align-items: flex-start; 
-        gap: 20px;
-        max-width: 1600px;
+        align-items: center;
     }
-
-    .footer-about, 
-    .footer-links, 
-    .footer-contact {
-        margin-bottom: 0;
-        text-align: left;
-    }
-
     .footer h3.logo {
-        font-size: 24px;
+        font-size: 26px;
     }
 
     .footer h4 {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     .footer p, .footer li, .footer a {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .footer-bottom {
-        font-size: 13px;
-        padding-top: 10px;
-        margin-top: 15px;
+        font-size: 15px;
     }
 }
 
