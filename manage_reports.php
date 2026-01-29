@@ -50,7 +50,6 @@ if($user_pic && $user_pic['profile_pic']){
 <title>Menaxho Raportimet | Dashboard</title>
 <link rel="stylesheet" href="style.css">
 <style>
-
 body {
     display: flex;
     flex-direction: column;
@@ -61,7 +60,6 @@ body {
 main { 
     flex: 1; 
 }
-
 .table-container {
     width: 95%;
     margin: 20px auto;
@@ -92,7 +90,6 @@ td img {
     object-fit: cover;
     border-radius: 5px;
 }
-
 .btn, .btn_edit {
     padding: 6px 12px;
     border-radius: 5px;
@@ -116,7 +113,6 @@ td img {
 .btn_edit:hover{
     background: #0b7dda; 
 }
-
 .modal{
     display:none; 
     position:fixed; 
@@ -172,7 +168,6 @@ td img {
 .modal .btn.cancel:hover{ 
     background:#95a5a6; 
 }
-
 footer.footer {
     background-color: rgb(27, 79, 47);
     color: #fff;
@@ -438,7 +433,6 @@ footer.footer {
         font-size: 12px; 
     }
 }
-
 </style>
 </head>
 <body>

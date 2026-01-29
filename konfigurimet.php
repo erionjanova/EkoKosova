@@ -302,7 +302,7 @@ footer {
 
     /* HEADER */
     .navbar .logo { 
-        font-size: 28px; /* më e madhe */
+        font-size: 28px; 
     }
     .navbar ul.nav-links li a { 
         font-size: 18px; 
@@ -317,18 +317,18 @@ footer {
     /* FOOTER */
     .footer-container {
         flex-direction: row;
-        justify-content: space-around; /* qendër dhe hapësirë */
+        justify-content: space-around; 
         align-items: flex-start;
         gap: 40px;
     }
 
     .footer-about, .footer-links, .footer-contact {
-        flex: 1 1 33%; /* kolonat më të gjera */
+        flex: 1 1 33%;
         text-align: center; 
     }
 
     .footer h3.logo {
-        font-size: 32px; /* më e dukshme */
+        font-size: 32px; 
     }
 
     .footer h4 {
@@ -349,31 +349,104 @@ footer {
 }
 
 @media (min-width: 540px) and (max-width: 1024px){
-    table { font-size: 12px; width: 95%; }
-    th, td { padding: 6px 5px; }
-    td img { width: 30px; height: 30px; }
-    table a.btn { padding: 4px 8px; font-size: 10px; }
+    table{ 
+        font-size: 12px; 
+        width: 95%; 
+    }
+    th, td{ 
+        padding: 6px 5px; 
+    }
+    td img{ 
+        width: 30px; 
+        height: 30px; 
+    }
+    table a.btn{ 
+        padding: 4px 8px; 
+        font-size: 10px; 
+    }
 
-    .footer-container {
+    .footer-container{
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 15px;
     }
 
-    .footer h3.logo { font-size: 20px; }
-    .footer h4 { font-size: 16px; }
-    .footer p, .footer li, .footer a { font-size: 14px; }
-    .footer-bottom { font-size: 13px; }
+    .footer h3.logo{ 
+        font-size: 20px; 
+    }
+    .footer h4{ 
+        font-size: 16px; 
+    }
+    .footer p, .footer li, .footer a{ 
+        font-size: 14px; 
+    }
+    .footer-bottom{ 
+        font-size: 13px; 
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .footer {
+        padding: 15px 20px; 
+    }
+
+    .footer-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around; 
+        align-items: flex-start;
+        gap: 10px; 
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        flex: 1 1 30%; 
+        min-width: 200px; 
+        margin-bottom: 10px;
+        text-align: left; 
+    }
+
+    .footer h3.logo {
+        font-size: 20px;
+    }
+
+    .footer h4 {
+        font-size: 16px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 14px;
+    }
+
+    .footer-bottom {
+        margin-top: 10px;
+        padding-top: 6px;
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        font-size: 12px;
+    }
 }
 
 
+
 @media (min-width: 1440px) and (max-width: 1600px) {
-    table { font-size: 15px; width: 80%; }
-    th, td { padding: 10px 8px; }
-    td img { width: 40px; height: 40px; }
-    table a.btn { padding: 6px 12px; font-size: 13px; }
- .footer-container {
+    table{ 
+        font-size: 15px; 
+        width: 80%; 
+    }
+    th, td{ 
+        padding: 10px 8px; 
+    }
+    td img{ 
+        width: 40px; 
+        height: 40px; 
+    }
+    table a.btn{ 
+        padding: 6px 12px; font-size: 13px; 
+    }
+    .footer-container{
         flex-direction: row;
         justify-content: center;
         align-items: center;
@@ -400,13 +473,24 @@ footer {
     }
 }
 
-/* MacBook 16" (3072px x 1920px Retina, scale ~2) => normal CSS 1600px+ */
+/* MacBook 16" */
 @media (min-width: 1601px) {
-    table { font-size: 16px; width: 80%; }
-    th, td { padding: 12px; }
-    td img { width: 50px; height: 50px; }
-    table a.btn { padding: 6px 12px; font-size: 14px; }
- .footer-container {
+    table{ 
+        font-size: 16px; 
+        width: 80%; 
+    }
+    th, td{ 
+        padding: 12px; 
+    }
+    td img{ 
+        width: 50px; 
+        height: 50px; 
+    }
+    table a.btn{ 
+        padding: 6px 12px; 
+        font-size: 14px; 
+    }
+    .footer-container {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;

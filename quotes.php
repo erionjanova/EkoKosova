@@ -73,9 +73,19 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <style>
 
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}   
+
 .quotes-container {
     display: flex;
-    flex-wrap: wrap; /* lejon që card-t të kalojnë në rreshta të rinj */
+    flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
     padding: 0 10px;
@@ -85,7 +95,7 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 
 /* Foto autorit responsive */
 .quote-card img {
-    width: 80px; /* zvogëlo për celular */
+    width: 80px;
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
@@ -96,10 +106,10 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     text-align: center;
     font-size: 14px;
     margin-bottom: 10px;
-    word-wrap: break-word;   /* thyen fjalët e gjata */
-    overflow: hidden;        /* fsheh tekstin jashtë kartës */
+    word-wrap: break-word;   
+    overflow: hidden;     
     display: -webkit-box;
-    -webkit-line-clamp: 10;   /* trego vetëm 3 rreshta */
+    -webkit-line-clamp: 10;   /* trego vetëm 10 rreshta */
     -webkit-box-orient: vertical;
 }
 
@@ -183,7 +193,7 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
 }
 
 .manage-quote-btn {
-    margin-top: auto; /* shtyn butonin në fund të kartës */
+    margin-top: auto;
     display: inline-block;
     padding: 6px 12px;
     background-color: #2E7D32;
@@ -198,6 +208,15 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     background-color: #1b5e20;
 }
 
+.quotes-section h2{
+        margin-left: 43%;
+}
+
+.page-content {
+    flex: 1;
+}
+
+
 @media screen and (max-width:768px){
     .dashboard-container {
         flex-direction: column;
@@ -209,11 +228,21 @@ $quotes = $queryQuotes->fetchAll(PDO::FETCH_ASSOC);
     .user-table {
         font-size: 14px;
     }
+    .quotes-section h2{
+        margin-left: 110px;
+    }
 }
+
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
+.quotes-section h2{
+        margin-left: 57%;
+}
+}
+
 
 </style>
 <body>
-
+<main class="page-content">
 <header>
     <nav class="navbar">
         <div class="logo">🌿 EkoKosova</div>
@@ -348,7 +377,7 @@ document.getElementById('popup-ok').addEventListener('click', function(){
 });
 </script>
 <?php endif; ?>
-
+</main>
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-about">

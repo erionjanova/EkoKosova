@@ -382,6 +382,51 @@ body {
 
 
 
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .footer {
+        padding: 15px 20px; /* më kompakt */
+    }
+
+    .footer-container {
+        display: flex;
+        flex-direction: row; /* kolonat në rresht */
+        flex-wrap: wrap; /* kolonat që nuk hyjnë shkojnë poshtë */
+        justify-content: space-around;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .footer-about, .footer-links, .footer-contact {
+        flex: 1 1 30%; /* çdo kolonë merr ~30% gjerësinë */
+        min-width: 200px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .footer h3.logo {
+        font-size: 20px;
+    }
+
+    .footer h4 {
+        font-size: 16px;
+    }
+
+    .footer p, .footer li, .footer a {
+        font-size: 14px;
+    }
+
+    .footer-bottom {
+        margin-top: 10px;
+        padding-top: 6px;
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        font-size: 12px;
+    }
+}
+
+
+
 </style>
 
 </head>

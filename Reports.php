@@ -65,8 +65,6 @@ if (empty($_FILES['photo']['name'])) {
     }
 }
 
-
-
         if (empty($error)) {
             $stmt = $conn->prepare("
                 INSERT INTO reports (user_id, name, email, city, type, description, photo)

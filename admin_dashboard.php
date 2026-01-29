@@ -155,84 +155,31 @@ body {
     color: #ffffffaa;
 }
 
-/* Responsive për dashboard dhe footer */
-@media screen and (max-width: 992px) {
- .dashboard-buttons {
-        flex-direction: column;   /* nga horizontal -> vertical */
-        align-items: center;      /* qendërso butonat */
-        gap: 15px;                /* hapsirë mes butonave */
-    }
-
-    .dashboard-buttons .btn {
-        width: 100%;              /* çdo button zë të gjithë gjerësinë */
-        max-width: 300px;         /* kufizo gjerësinë maksimale */
-        text-align: center;
-        padding: 12px 0;          /* më pak padding horizontal */
-        font-size: 14px;          /* më e vogël në telefon */
-    }
-
+@media screen and (max-width: 767px) {
     .dashboard-container {
-        padding: 20px 15px;       /* pak padding në mobile */
-        margin-top: 50px;         /* largësia nga lart */
-    }
-}
-
-@media screen and (max-width: 768px) {
-
-    .dashboard-buttons {
-        flex-direction: column;   /* nga horizontal -> vertical */
-        align-items: center;      /* qendërso butonat */
-        gap: 15px;                /* hapsirë mes butonave */
+        margin-top: 50px;
+        padding: 20px 15px;
     }
 
-    .dashboard-buttons .btn {
-        width: 100%;              /* çdo button zë të gjithë gjerësinë */
-        max-width: 300px;         /* kufizo gjerësinë maksimale */
-        text-align: center;
-        padding: 12px 0;          /* më pak padding horizontal */
-        font-size: 14px;          /* më e vogël në telefon */
-    }
-
-    .dashboard-container {
-        padding: 20px 15px;       /* pak padding në mobile */
-        margin-top: 50px;         /* largësia nga lart */
-    }
-    
-
-    .footer-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-  .footer-about,
-  .footer-links{
-    margin: -30px;
-    margin-top: -55px;
-  }
-
-  .footer-contact{
-    margin: -30px;
-    margin-top: -20px;
-  }
-
-  .footer-links ul {
-    padding: 10px;
-  }
-
-  .footer-links li {
-    margin-bottom: 8px;
-  }
-}
-
-@media screen and (max-width: 480px) {
     .dashboard-label {
         font-size: 18px;
     }
 
+    .dashboard-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
     .dashboard-buttons .btn {
-        font-size: 13px;
-        padding: 10px 15px;
+        width: 300px;   
+        height: 60px;
+        margin-bottom: 15px;
+        
+        display: flex;       
+        justify-content: center;
+        align-items: center; 
+        text-align: center; 
     }
 
     .footer-container {
@@ -241,59 +188,102 @@ body {
         text-align: center;
     }
 
-    .footer-about,
-    .footer-links{
-        margin: -30px;
-        margin-top: -55px;
+    .footer-about, .footer-links, .footer-contact {
+        flex: 1 1 100%;
+        text-align: center;
+        margin-bottom: 15px;
     }
 
-    .footer-contact{
-        margin: -30px;
-        margin-top: -20px;
-    }
-
-    .footer-links ul {
-        padding: 10px;
-    }
-
-    .footer-links li {
-        margin-bottom: 8px;
-    }
+    .footer h3.logo { font-size: 18px; }
+    .footer h4 { font-size: 14px; }
+    .footer p, .footer li, .footer a { font-size: 12px; }
+    .footer-bottom { font-size: 11px; }
 }
 
+/* Responsive: Tablet (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .dashboard-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
 
-@media (min-width: 1440px) and (max-width: 1600px) {
-    table { font-size: 15px; width: 80%; }
-    th, td { padding: 10px 8px; }
-    td img { width: 40px; height: 40px; }
-    table a.btn { padding: 6px 12px; font-size: 13px; }
- .footer-container {
-        flex-direction: row;
+    .dashboard-buttons .btn {
+        width: 300px;  
+        height: 60px;
+        margin-bottom: 15px;
+        
+        display: flex;       
         justify-content: center;
         align-items: center;
+        text-align: center;    
+    }
+    .footer {
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
 
     .footer-about, .footer-links, .footer-contact {
-        margin-bottom: 0;
+        flex: 1 1 100%; 
+        text-align: center; 
+        margin-bottom: 10px;
     }
 
     .footer h3.logo {
-        font-size: 24px;
+        font-size: 18px;
     }
 
     .footer h4 {
-        font-size: 17px;
+        font-size: 14px;
     }
 
     .footer p, .footer li, .footer a {
-        font-size: 15px;
+        font-size: 13px;
     }
 
     .footer-bottom {
-        font-size: 14px;
+        font-size: 11px;
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid rgba(255,255,255,0.3);
     }
 }
 
+/* Desktop (1025px - 1440px) */
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+    .dashboard-container { margin-top: 100px; }
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer h3.logo { font-size: 24px; }
+    .footer h4 { font-size: 17px; }
+    .footer p, .footer li, .footer a { font-size: 15px; }
+    .footer-bottom { font-size: 14px; }
+}
+
+/* Large screens (>1440px, MacBook 16", iPhone 16 Pro Max landscape) */
+@media screen and (min-width: 1441px) {
+    .dashboard-container { margin-top: 120px; }
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer h3.logo { font-size: 26px; }
+    .footer h4 { font-size: 18px; }
+    .footer p, .footer li, .footer a { font-size: 16px; }
+    .footer-bottom { font-size: 15px; }
+}
 
 /* MacBook 16" 1600px+ */
 @media (min-width: 1601px) {
