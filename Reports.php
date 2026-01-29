@@ -17,6 +17,16 @@ if(isset($_SESSION['user_id'])){
     }
 }
 
+$_SESSION['old'] = [
+        'name' => $name,
+        'email' => $email,
+        'city' => $city,
+        'type' => $type,
+        'description' => $description
+        // Note: Email nuk e ruajim sepse në gabim duhet të pastrohet
+    ];
+
+
 $success = $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
@@ -86,6 +96,12 @@ if (empty($_FILES['photo']['name'])) {
             }
         }
     }
+
+     unset($_SESSION['old']);
+
+    $_SESSION['success'] = "Mesazhi u dërgua me sukses!";
+    header("Location: Reports.php");
+    exit;
 }
 
 $latestReports = $conn->prepare("
