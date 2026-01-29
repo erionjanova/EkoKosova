@@ -2,28 +2,94 @@
 session_start();
 include 'config.php';
 
-$profile_pic = 'uploads/member.png'; 
+$success = $_SESSION['success'] ?? "";
+$error = $_SESSION['error'] ?? "";
 
-if(isset($_SESSION['user_id'])){
+// Ruaj input-et për të mbajtur vlerat
+$old = $_SESSION['old'] ?? [];
+unset($_SESSION['success'], $_SESSION['error'], $_SESSION['old']);
+
+$profile_pic = 'uploads/member.png'; 
+$userEmail = "";
+
+if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    $queryPic = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
-    $queryPic->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $queryPic->execute();
-    $user_pic = $queryPic->fetch(PDO::FETCH_ASSOC);
+    // Merr foto dhe email nga DB
+    $stmtUser = $conn->prepare("SELECT profile_pic, email FROM users WHERE id = :id");
+    $stmtUser->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmtUser->execute();
+    $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
-    if($user_pic && $user_pic['profile_pic']){
-        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+    if ($userData) {
+        if (!empty($userData['profile_pic'])) {
+            $profile_pic = htmlspecialchars($userData['profile_pic']);
+        }
+        $userEmail = trim($userData['email']);
     }
 }
+
+if (isset($_POST['send_contact'])) {
+    $full_name = trim($_POST['full_name']);
+    $email = trim($_POST['email']);
+    $subject = trim($_POST['subject']);
+    $message = trim($_POST['message']);
+
+    // Ruaj input-et për rifreskim
+    $_SESSION['old'] = [
+        'full_name' => $full_name,
+        'subject' => $subject,
+        'message' => $message
+        // Note: Email nuk e ruajim sepse në gabim duhet të pastrohet
+    ];
+
+    if (empty($full_name) || empty($email) || empty($subject) || empty($message)) {
+        $_SESSION['error'] = "Ju lutem plotësoni të gjitha fushat.";
+        header("Location: contact.php");
+        exit;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Email-i nuk është valid.";
+        header("Location: contact.php");
+        exit;
+    }
+
+    // Kontrollo me email-in e profilit
+    if ($email !== $userEmail) {
+        $_SESSION['error'] = "Email-i nuk përputhet me email-in e profilit tuaj.";
+        header("Location: contact.php");
+        exit;
+    }
+
+    $stmt = $conn->prepare("
+        INSERT INTO contacts (full_name, email, subject, message)
+        VALUES (:full_name, :email, :subject, :message)
+    ");
+
+    $stmt->execute([
+        ':full_name' => $full_name,
+        ':email' => $email,
+        ':subject' => $subject,
+        ':message' => $message
+    ]);
+
+    // Pas submit, fshij të gjitha input-et
+    unset($_SESSION['old']);
+
+    $_SESSION['success'] = "Mesazhi u dërgua me sukses!";
+    header("Location: contact.php");
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontakti</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakti</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
@@ -41,7 +107,6 @@ if(isset($_SESSION['user_id'])){
             <li><a href="quotes.php">Thenie</a></li>
         </ul>
 
-       
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <span class="welcome">
@@ -49,15 +114,12 @@ if(isset($_SESSION['user_id'])){
                     <strong style="color:white;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
                 </span>
 
-                
-                <?php if(isset($_SESSION['user_id'])): ?>
-                    <a href="profile.php" class="profile-link">
-                        <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
-                    </a>
-                <?php endif; ?>
+                <a href="profile.php" class="profile-link">
+                    <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+                </a>
 
                 <?php if($_SESSION['is_admin'] == 1): ?>
-                    <a href="admin_dashboard.php"style=" margin-left:10px;padding: 10px 20px;background-color: green;color: white;text-decoration: none;border-radius: 8px;transition: 0.3s;">Dashboard</a>
+                    <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;text-decoration:none;border-radius:8px;transition:0.3s;">Dashboard</a>
                 <?php endif; ?>
 
                 <form action="Logout.php" method="POST" class="translate" style="display:inline; margin-left:5px;">
@@ -69,7 +131,6 @@ if(isset($_SESSION['user_id'])){
                 <button class="translate" style="margin-left:5px;">🌐</button>
 
             <?php else: ?>
-    
                 <button class="login">
                     <a href="Login.php" style="text-decoration:none;color:white;">Kyçu</a>
                 </button>
@@ -83,51 +144,46 @@ if(isset($_SESSION['user_id'])){
         </div>
     </nav>
 </header>
+
 <section class="hero">
-    <div>
-        <h2>Na kontaktoni</h2>
-        <p>Ne jemi këtu për t'ju ndihmuar dhe për t'iu përgjigjur çdo pyetjeje që keni.</p>
-    </div>
+  <div>
+    <h2>Na kontaktoni</h2>
+    <p>Ne jemi këtu për t'ju ndihmuar dhe për t'iu përgjigjur çdo pyetjeje që keni.</p>
+  </div>
 </section>
+
 
 <section class="report-section">
-    <h2>Na dërgoni një mesazh</h2>
-    <form class="report-form">
-        <label>Emri dhe Mbiemri</label>
-        <input type="text" placeholder="Shkruani emrin tuaj" required>
+<h2>Na dërgoni një mesazh</h2>
 
-        <label>Email </label>
-        <input type="email" placeholder="Shkruani emailin tuaj" required>
+<?php if($error): ?>
+<div class="alert alert-error"><?= $error ?></div>
+<?php endif; ?>
+<?php if($success): ?>
+<div class="alert alert-success"><?= $success ?></div>
+<?php endif; ?>
 
-        <label>Tema</label>
-        <input type="text" placeholder="Tema e mesazhit" required>
+<form class="report-form" method="POST" action="contact.php">
+    <label>Emri dhe Mbiemri</label>
+    <input type="text" name="full_name" placeholder="Shkruani emrin tuaj"
+           value="<?= htmlspecialchars($old['full_name'] ?? '') ?>">
 
-        <label>Mesazhi</label>
-        <textarea rows="5" placeholder="Shkruani mesazhin tuaj këtu..." required></textarea>
-        <button id="submit">Dërgo</button>
-    </form>
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Shkruani email-in tuaj"
+           value="" >
+
+    <label>Tema</label>
+    <input type="text" name="subject" placeholder="Tema e mesazhit"
+           value="<?= htmlspecialchars($old['subject'] ?? '') ?>">
+
+    <label>Mesazhi</label>
+    <textarea name="message" rows="5" placeholder="Shkruani mesazhin tuaj këtu..."><?= htmlspecialchars($old['message'] ?? '') ?></textarea>
+
+    <button id="submit" type="submit" name="send_contact">Dërgo</button>
+</form>
+
 </section>
 
-<section class="stats-section">
-    <h2>Na kontaktoni</h2>
-
-    <div class="cards-container">
-        <div class="stats-card">
-            <h3>📍 Lokacioni</h3>
-            <p>Prishtinë, Kosovë</p>
-        </div>
-
-        <div class="stats-card">
-            <h3>📞 Nr.telefonit</h3>
-            <p>+383 44 123 456</p>
-        </div>
-
-        <div class="stats-card">
-            <h3>📧 Email</h3>
-            <p>info@ekokosova.com</p>
-        </div>
-    </div>
-</section>
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-about">
@@ -156,5 +212,13 @@ if(isset($_SESSION['user_id'])){
     </div>
 </footer>
 
+<script>
+setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(alert => {
+        alert.classList.add('hide-alert');
+        setTimeout(() => alert.remove(), 500);
+    });
+}, 3000);
+</script>
 </body>
 </html>
