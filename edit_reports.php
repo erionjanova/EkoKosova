@@ -13,6 +13,7 @@ if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
 }
 
 $id = intval($_GET['id']);
+$error_message = "";
 
 // Merr raportin ekzistues
 $stmt = $conn->prepare("SELECT * FROM reports WHERE id=?");
@@ -20,75 +21,78 @@ $stmt->execute([$id]);
 $report = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if(!$report){
-    echo "Raporti nuk ekziston.";
-    exit;
+    die("Raporti nuk ekziston.");
 }
 
-$error_message = "";
+// Merr profil-foton e user-it aktual
 $profile_pic = 'uploads/member.png';
+$stmtUser = $conn->prepare("SELECT profile_pic FROM users WHERE id = ?");
+$stmtUser->execute([$_SESSION['user_id']]);
+$user_pic = $stmtUser->fetch(PDO::FETCH_ASSOC);
+if($user_pic && !empty($user_pic['profile_pic'])){
+    $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+}
 
-// Ruaj ndryshimet
+// Ruaj input-et për rifreskim të form-it në rast gabimi
+$old = [
+    'name' => $report['name'],
+    'email' => $report['email'],
+    'city' => $report['city'],
+    'type' => $report['type'],
+    'description' => $report['description']
+];
+
+// Procesimi i form-it
 if(isset($_POST['submit'])){
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $city = trim($_POST['city']);
     $type = trim($_POST['type']);
     $description = trim($_POST['description']);
-    $photo = $report['photo'];
+    $photo = $report['photo']; // foto ekzistuese
 
-        // Kontroll i thjeshtë për fushat e detyrueshme
-    if(empty($name)){
-        $error_message = "⚠️ Ju lutem shkruani emrin!";
-    }
-    elseif(empty($email)){
-        $error_message = "⚠️ Ju lutem shkruani email-in!";
-    }
-    elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        $error_message = "⚠️ Email-i nuk është valid!";
-    }
-    elseif(empty($city)){
-        $error_message = "⚠️ Ju lutem shkruani qytetin!";
-    }
-    elseif(empty($type)){
-        $error_message = "⚠️ Ju lutem shkruani llojin e raportimit!";
-    }
-    elseif(empty($description)){
-        $error_message = "⚠️ Ju lutem shkruani përshkrimin!";
-    }
-    else{
+    // Rifreskoj vlerat e form-it
+    $old = compact('name','email','city','type','description');
 
-    // Kontroll nese email-i i shkruar i perket nje user-i tjeter
-    $checkUserEmail = $conn->prepare("
-        SELECT id 
-        FROM users 
-        WHERE email = ? AND id != ?
-    ");
-    $checkUserEmail->execute([
-        $email,
-        $_SESSION['user_id']
-    ]);
-
-    if ($checkUserEmail->rowCount() > 0) {
-        $error_message = "⚠️ Ky email i përket një përdoruesi tjetër në sistem!";
-    }
-
-    // Ngarko foto e re nëse ka
-    if (empty($error_message) && isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
-        $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-        $filename = uniqid() . "." . $ext;
-        $target = "uploads/" . $filename;
-
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
-            if ($photo && file_exists("uploads/".$photo)) {
-                unlink("uploads/".$photo);
-            }
-            $photo = $filename;
-        } else {
-            $error_message = "Ndodhi një gabim gjatë ngarkimit të fotos.";
+    // Validimet
+    if(empty($name)) $error_message = "⚠️ Ju lutem shkruani emrin!";
+    elseif(empty($email)) $error_message = "⚠️ Ju lutem shkruani email-in!";
+    elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) $error_message = "⚠️ Email-i nuk është valid!";
+    elseif(empty($city)) $error_message = "⚠️ Ju lutem shkruani qytetin!";
+    elseif(empty($type)) $error_message = "⚠️ Ju lutem shkruani llojin e raportimit!";
+    elseif(empty($description)) $error_message = "⚠️ Ju lutem shkruani përshkrimin!";
+    else {
+        // Kontrollo nëse email-i i shkruar i përket një përdoruesi tjetër
+        $checkUserEmail = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+        $checkUserEmail->execute([$email, $_SESSION['user_id']]);
+        if($checkUserEmail->rowCount() > 0){
+            $error_message = "⚠️ Ky email i përket një përdoruesi tjetër në sistem!";
         }
     }
 
-    if (empty($error_message)) {
+    // Ngarkimi i fotos së re
+    if(empty($error_message) && isset($_FILES['photo']) && $_FILES['photo']['error'] == 0){
+        $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg','jpeg','png','gif'];
+        if(!in_array($ext, $allowed)){
+            $error_message = "Format i pa lejuar për foton. Përdor jpg, jpeg, png ose gif.";
+        } else {
+            $filename = uniqid() . "." . $ext;
+            $target = "uploads/" . $filename;
+            if(move_uploaded_file($_FILES['photo']['tmp_name'], $target)){
+                // Fshi foton e vjetër
+                if($photo && file_exists("uploads/".$photo)){
+                    unlink("uploads/".$photo);
+                }
+                $photo = $filename;
+            } else {
+                $error_message = "Ndodhi një gabim gjatë ngarkimit të fotos.";
+            }
+        }
+    }
+
+    // Bëj update në DB nëse nuk ka gabime
+    if(empty($error_message)){
         $update = $conn->prepare("
             UPDATE reports 
             SET name=?, email=?, city=?, type=?, description=?, photo=? 
@@ -100,10 +104,7 @@ if(isset($_POST['submit'])){
     }
 }
 
-    } 
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -313,20 +314,16 @@ input[type=submit]:hover {
             <strong style="color:white;"><?= htmlspecialchars($_SESSION['username']) ?></strong>
         </span>
 
-        <?php if(isset($_SESSION['user_id'])): ?>
-            <a href="profile.php" class="profile-link">
-                <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
-            </a>
-        <?php endif; ?>
+        <a href="profile.php" class="profile-link">
+            <img src="<?= $profile_pic ?>" alt="Profili Im" class="nav-profile-pic">
+        </a>
 
         <?php if($_SESSION['is_admin'] == 1): ?>
-            <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;text-decoration:none;border-radius:8px;transition:0.3s;">Dashboard</a>
+            <a href="admin_dashboard.php" style="margin-left:10px;padding:10px 20px;background-color:green;color:white;text-decoration:none;border-radius:8px;">Dashboard</a>
         <?php endif; ?>
 
         <form action="Logout.php" method="POST" style="display:inline; margin-left:5px;">
-            <button type="submit" class="translate">
-                <img src="img/logout.png" class="logoutsymbol" style="width:20px;">
-            </button>
+            <button type="submit" class="translate"><img src="img/logout.png" class="logoutsymbol" style="width:20px;"></button>
         </form>
 
         <button class="translate" style="margin-left:5px;">🌐</button>
@@ -344,19 +341,19 @@ input[type=submit]:hover {
 
     <form method="POST" enctype="multipart/form-data">
         <label>Emri:</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($report['name']) ?>">
+        <input type="text" name="name" value="<?= htmlspecialchars($old['name']) ?>">
 
         <label>Email:</label>
-        <input type="text" name="email" value="<?= htmlspecialchars($report['email']) ?>">
+        <input type="text" name="email" value="<?= htmlspecialchars($old['email']) ?>">
 
         <label>Qyteti:</label>
-        <input type="text" name="city" value="<?= htmlspecialchars($report['city']) ?>">
+        <input type="text" name="city" value="<?= htmlspecialchars($old['city']) ?>">
 
         <label>Lloji:</label>
-        <input type="text" name="type" value="<?= htmlspecialchars($report['type']) ?>">
+        <input type="text" name="type" value="<?= htmlspecialchars($old['type']) ?>">
 
         <label>Përshkrimi:</label>
-        <textarea name="description" rows="5"><?= htmlspecialchars($report['description']) ?></textarea>
+        <textarea name="description" rows="5"><?= htmlspecialchars($old['description']) ?></textarea>
 
         <label>Foto ekzistuese:</label><br>
         <?php if($report['photo'] && file_exists("uploads/".$report['photo'])): ?>
