@@ -46,10 +46,14 @@ if(isset($_SESSION['user_id'])){
 <style>
 
 html, body {
-    max-width: 100%;
-    overflow-x: hidden;
+    height: 100%;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
 
 .profile-header {
     display: flex;
@@ -179,6 +183,11 @@ html, body {
     font-weight: bold;
 }
 
+
+.page-content {
+    flex: 1;
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
 
     .profile-container {
@@ -240,6 +249,7 @@ html, body {
 </style>
 </head>
 <body>
+<main class="page-content">
 <header>
     <nav class="navbar">
         <div class="logo">🌿 EkoKosova</div>
@@ -318,7 +328,7 @@ html, body {
 
     </div>
 </div>
-
+</main>
 
 <footer class="footer">
     <div class="footer-container">

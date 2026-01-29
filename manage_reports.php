@@ -60,6 +60,11 @@ body {
 main { 
     flex: 1; 
 }
+.responsive-table {
+    width: 100%;
+    min-width: 900px; 
+    border-collapse: collapse;
+}
 .table-container {
     width: 95%;
     margin: 20px auto;
@@ -313,6 +318,29 @@ footer.footer {
     }
     .footer-bottom{ font-size: 9px; 
 }
+}
+
+@media screen and (max-width: 850px) {
+
+    .responsive-table {
+        min-width: 700px;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 8px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    td.message {
+        min-width: 200px;
+    }
+
+    .btn, .btn_edit {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
 }
 /* 16" MacBook Pro dhe ekrane shumë të mëdha */
 @media screen and (min-width: 1601px){
