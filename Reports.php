@@ -2,6 +2,16 @@
 session_start();
 include 'config.php';
 
+$success = '';
+$error = '';
+
+if (isset($_SESSION['success'])) {
+    $success = $_SESSION['success'];
+    unset($_SESSION['success']);
+}
+
+
+
 $profile_pic = 'img/member.png'; // foto default
 
 if(isset($_SESSION['user_id'])){
@@ -17,17 +27,10 @@ if(isset($_SESSION['user_id'])){
     }
 }
 
-$_SESSION['old'] = [
-        'name' => $name,
-        'email' => $email,
-        'city' => $city,
-        'type' => $type,
-        'description' => $description
-        // Note: Email nuk e ruajim sepse në gabim duhet të pastrohet
-    ];
 
 
-$success = $error = "";
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
 
@@ -56,6 +59,8 @@ $stmtUser->execute([':id' => $user_id]);
 $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
 $userEmail = $userData['email'] ?? '';
 
+
+
 if ($email != $userEmail) {
     $error = "Email-i nuk perputhet me email-in tuaj ne sistem ❌";
 }
@@ -80,7 +85,7 @@ if (empty($_FILES['photo']['name'])) {
                 INSERT INTO reports (user_id, name, email, city, type, description, photo)
                 VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
             ");
-
+ 
             if ($stmt->execute([
                 ':user_id' => $user_id,
                 ':name' => $name,
@@ -90,18 +95,49 @@ if (empty($_FILES['photo']['name'])) {
                 ':description' => $description,
                 ':photo' => $photoName
             ])) {
+                
                 $success = "Raporti u dergua me sukses ✅";
+                
+                
             } else {
                 $error = "Gabim gjate ruajtjes se raportit ❌";
             }
+            unset($_stmt['old']);
+            header("Location: Reports.php");
+            exit;
         }
     }
 
-     unset($_SESSION['old']);
+    if (empty($error)) {
+    $stmt = $conn->prepare("
+        INSERT INTO reports (user_id, name, email, city, type, description, photo)
+        VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
+    ");
 
-    $_SESSION['success'] = "Mesazhi u dërgua me sukses!";
-    header("Location: Reports.php");
-    exit;
+    if ($stmt->execute([
+        ':user_id' => $user_id,
+        ':name' => $name,
+        ':email' => $email,
+        ':city' => $city,
+        ':type' => $type,
+        ':description' => $description,
+        ':photo' => $photoName
+    ])) {
+
+        $_SESSION['success'] = "Raporti u dergua me sukses ✅";
+        unset($_SESSION['old']);
+
+        header("Location: Reports.php");
+        exit;
+
+    } else {
+        $error = "Gabim gjate ruajtjes se raportit ❌";
+    }
+}
+
+
+
+  
 }
 
 $latestReports = $conn->prepare("
