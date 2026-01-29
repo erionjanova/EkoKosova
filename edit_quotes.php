@@ -236,8 +236,8 @@ img.preview{
     <h2>✏️ Edit Thenien</h2>
 
         <?php if(!empty($error_message)): ?>
-    <div class="error-message"><?= $error_message ?></div>
-<?php endif; ?>
+            <div class="error-message"><?= $error_message ?></div>
+        <?php endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
         <label>Thënie:</label>
