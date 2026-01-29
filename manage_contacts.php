@@ -52,6 +52,11 @@ body {
 main { 
     flex: 1; 
 }
+.responsive-table {
+    width: 100%;
+    min-width: 900px; 
+    border-collapse: collapse;
+}
 .table-container {
     width: 95%;
     margin: 20px auto;
@@ -423,6 +428,29 @@ footer.footer {
     }
     .footer-bottom{ 
         font-size: 12px; 
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .responsive-table {
+        min-width: 700px;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 8px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    td.message {
+        min-width: 200px;
+    }
+
+    .btn, .btn_edit {
+        padding: 4px 6px;
+        font-size: 11px;
     }
 }
 </style>
