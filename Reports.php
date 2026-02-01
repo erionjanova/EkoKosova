@@ -2,113 +2,108 @@
 session_start();
 include 'config.php';
 
+
+    $profile_pic = 'uploads/member.png';
+
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+
+        $queryPic = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
+        $queryPic->bindParam(':id', $user_id, PDO::PARAM_INT);
+        $queryPic->execute();
+        $user_pic = $queryPic->fetch(PDO::FETCH_ASSOC);
+
+        if($user_pic && $user_pic['profile_pic']){
+            $profile_pic = htmlspecialchars($user_pic['profile_pic']);
+        }
+    }
+
+
 $success = '';
 $error = '';
 
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
-    unset($_SESSION['success']);
+    unset($_SESSION['success']); 
 }
 
-
-
-$profile_pic = 'img/member.png'; // foto default
-
-if(isset($_SESSION['user_id'])){
-    $user_id = $_SESSION['user_id'];
-
-    $reportQuery = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id");
-    $reportQuery->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $reportQuery->execute();
-    $user_pic = $reportQuery->fetch(PDO::FETCH_ASSOC);
-
-    if($user_pic && $user_pic['profile_pic']){
-        $profile_pic = htmlspecialchars($user_pic['profile_pic']);
-    }
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']); 
 }
 
-
-
-
-
-
+// Këtu vazhdon logjika e raportit
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_report'])) {
-
     if (!isset($_SESSION['user_id'])) {
-        $error = "Duhet të jeni të kyçur për të raportuar ❌";
-    } else {
-
-        $user_id = $_SESSION['user_id'];
-
-        $name = trim($_POST['name']);
-        $email = trim($_POST['email']);
-        $city = trim($_POST['city']);
-        $type = trim($_POST['type']);
-        $description = trim($_POST['description']);
-
-        if ($name == "" || $email == "" || $city == "" || $type == "" || $description == "") {
-            $error = "Ju lutem plotesoni te gjitha fushat ⚠️";
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = "Email-i nuk eshte valid ❌";
-        }
-        $email = trim($_POST['email']);
-
-/* Kontrollo qe email-i i shkruar perputhet me email-in e user-it ne databaze */
-$stmtUser = $conn->prepare("SELECT email FROM users WHERE id = :id LIMIT 1");
-$stmtUser->execute([':id' => $user_id]);
-$userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
-$userEmail = $userData['email'] ?? '';
-
-
-
-if ($email != $userEmail) {
-    $error = "Email-i nuk perputhet me email-in tuaj ne sistem ❌";
-}
-
-/* FOTO */
-$photoName = null;
-
-/* FOTO OBLIGATIVE */
-if (empty($_FILES['photo']['name'])) {
-    $error = "Duhet te ngarkoni patjeter nje foto ❌";
-} else {
-    $photoName = time() . "_" . basename($_FILES['photo']['name']);
-    $target = "uploads/" . $photoName;
-
-    if (!move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
-        $error = "Gabim gjate ngarkimit te fotos ❌";
+        $_SESSION['error'] = "Duhet të jeni të kyçur për të raportuar ❌";
+        header("Location: Reports.php");
+        exit;
     }
-}
 
-        if (empty($error)) {
-            $stmt = $conn->prepare("
-                INSERT INTO reports (user_id, name, email, city, type, description, photo)
-                VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
-            ");
- 
-            if ($stmt->execute([
-                ':user_id' => $user_id,
-                ':name' => $name,
-                ':email' => $email,
-                ':city' => $city,
-                ':type' => $type,
-                ':description' => $description,
-                ':photo' => $photoName
-            ])) {
-                
-                $success = "Raporti u dergua me sukses ✅";
-                
-                
-            } else {
-                $error = "Gabim gjate ruajtjes se raportit ❌";
-            }
-            unset($_stmt['old']);
+    $user_id = $_SESSION['user_id'];
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $city = trim($_POST['city']);
+    $type = trim($_POST['type']);
+    $description = trim($_POST['description']);
+
+    if ($name == "" || $email == "" || $city == "" || $type == "" || $description == "") {
+        $_SESSION['error'] = "Ju lutem plotesoni te gjitha fushat ⚠️";
+        header("Location: Reports.php");
+        exit;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Email-i nuk eshte valid ❌";
+        header("Location: Reports.php");
+        exit;
+    }
+
+    // Kontrollo email-in e user-it
+    $stmtUser = $conn->prepare("SELECT email FROM users WHERE id = :id LIMIT 1");
+    $stmtUser->execute([':id' => $user_id]);
+    $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
+    $userEmail = $userData['email'] ?? '';
+
+    if ($email != $userEmail) {
+        $_SESSION['error'] = "Email-i nuk perputhet me email-in tuaj ne sistem ❌";
+        header("Location: Reports.php");
+        exit;
+    }
+
+    // Foto
+    if (empty($_FILES['photo']['name'])) {
+        $_SESSION['error'] = "Duhet te ngarkoni patjeter nje foto ❌";
+        header("Location: Reports.php");
+        exit;
+    } else {
+        $photoName = time() . "_" . basename($_FILES['photo']['name']);
+        $target = "uploads/" . $photoName;
+
+        if (!move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
+            $_SESSION['error'] = "Gabim gjate ngarkimit te fotos ❌";
             header("Location: Reports.php");
             exit;
         }
     }
 
-    if (empty($error)) {
+    $profile_pic = 'img/member.png'; // default
+
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+
+        $stmt = $conn->prepare("SELECT profile_pic FROM users WHERE id = :id LIMIT 1");
+        $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($user && !empty($user['profile_pic'])){
+            // Nëse ruan vetëm emrin e file-it
+            $profile_pic = 'uploads/' . htmlspecialchars($user['profile_pic']);
+        }
+    }
+
+    // Ruaj raportin
     $stmt = $conn->prepare("
         INSERT INTO reports (user_id, name, email, city, type, description, photo)
         VALUES (:user_id, :name, :email, :city, :type, :description, :photo)
@@ -123,22 +118,16 @@ if (empty($_FILES['photo']['name'])) {
         ':description' => $description,
         ':photo' => $photoName
     ])) {
-
         $_SESSION['success'] = "Raporti u dergua me sukses ✅";
-        unset($_SESSION['old']);
-
         header("Location: Reports.php");
         exit;
-
     } else {
-        $error = "Gabim gjate ruajtjes se raportit ❌";
+        $_SESSION['error'] = "Gabim gjate ruajtjes se raportit ❌";
+        header("Location: Reports.php");
+        exit;
     }
 }
 
-
-
-  
-}
 
 $latestReports = $conn->prepare("
     SELECT name, city, type, description, photo, created_at
