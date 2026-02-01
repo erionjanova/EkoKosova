@@ -73,18 +73,18 @@ if(isset($_POST['submit'])){
     // Ngarkimi i fotos së re
     if(empty($error_message) && isset($_FILES['photo']) && $_FILES['photo']['error'] == 0){
         $ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg','jpeg','png','gif'];
+        $allowed = ['jpg','jpeg','png','gif', 'avif'];
         if(!in_array($ext, $allowed)){
             $error_message = "Format i pa lejuar për foton. Përdor jpg, jpeg, png ose gif.";
         } else {
-            $filename = uniqid() . "." . $ext;
+            $filename = uniqid() . "." . $ext; // e krijon ni emer unik edhe i largohet overwrite
             $target = "uploads/" . $filename;
             if(move_uploaded_file($_FILES['photo']['tmp_name'], $target)){
                 // Fshi foton e vjetër
                 if($photo && file_exists("uploads/".$photo)){
-                    unlink("uploads/".$photo);
+                    unlink("uploads/".$photo); // e fshin foton e vjeter nga serveri
                 }
-                $photo = $filename;
+                $photo = $filename; // gati per ne databaze
             } else {
                 $error_message = "Ndodhi një gabim gjatë ngarkimit të fotos.";
             }

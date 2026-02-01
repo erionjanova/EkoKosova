@@ -12,15 +12,15 @@ if(isset($_POST['submit'])){
     } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         $error = "Ju lutem shkruani nje email valid!";
     } else {
-        $userQuery = $conn->prepare("SELECT id FROM users WHERE email=?");
+        $userQuery = $conn->prepare("SELECT id FROM users WHERE email=?"); // gjeje userin me kete email
         $userQuery->execute([$email]);
-        $user = $userQuery->fetch(PDO::FETCH_ASSOC);
+        $user = $userQuery->fetch(PDO::FETCH_ASSOC); // merr te dhenat e userit si array asociativ
 
         if($user){
             $token = bin2hex(random_bytes(32)); // krijon nje token te sigurt me 32 karaktere
-            $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+            $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); // caktohet koha e skadimit te tokenit ne 1 ore nga momenti i krijimit
 
-            $update = $conn->prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE id=?");
+            $update = $conn->prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE id=?"); // tokenin edhe oren e skadimit e ruan ne tabelen users ne DB
             $update->execute([$token, $expires, $user['id']]);
 
             // Shkoni ne reset_password.php me token

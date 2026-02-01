@@ -3,9 +3,11 @@ session_start();
 
 $success_message = $_SESSION['success_message'] ?? "";
 $error_message = $_SESSION['error_message'] ?? "";
+$old = $_SESSION['old'] ?? [];
 
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
+unset($_SESSION['old']);
+unset($_SESSION['success_message'], $_SESSION['error_message']);
+
 ?>
 
 
@@ -78,13 +80,15 @@ unset($_SESSION['error_message']);
             
             <form action="SignUpLogic.php" method="post" enctype="multipart/form-data">
                 <label>Emri dhe Mbiemri</label>
-                <input type="text" name="name" placeholder="Shkruani Emrin dhe Mbiemrin">
+                <input type="text" name="name" placeholder="Shkruani Emrin dhe Mbiemrin" value="<?= htmlspecialchars($old['name'] ?? '') ?>">
 
                 <label>Email</label>
-                <input type="text" name="email" placeholder="Shkruani emailin tuaj">
+                <input type="text" name="email" placeholder="Shkruani emailin tuaj" value="<?= htmlspecialchars($old['email'] ?? '') ?>">
+
 
                 <label>Username</label>
-                <input type="text" name="username" placeholder="Shkruani username tuaj">
+                <input type="text" name="username" placeholder="Shkruani username tuaj" value="<?= htmlspecialchars($old['username'] ?? '') ?>">
+
 
                 <label>Fjalëkalimi</label>
                 <input type="password" name="password" placeholder="Krijo një fjalëkalim">
