@@ -22,7 +22,7 @@ if(isset($_SESSION['user_id'])){
 
     if($user_pic && $user_pic['profile_pic']){ // e kontrollon nese useri ekziston edhe kontrollon nese fusha e fotos ka vlere pra nese eshte ngarkuar foto perndryshe nuk vazhdon
         $profile_pic = htmlspecialchars($user_pic['profile_pic']);
-    }
+    }                 // e mbron nga XSS
 }
 ?>
 

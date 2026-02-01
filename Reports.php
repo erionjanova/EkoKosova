@@ -165,7 +165,7 @@ $reports = $latestReports->fetchAll(PDO::FETCH_ASSOC);
             border: 1px solid #f5c6cb;
             border-radius: 5px;
             margin-bottom: 15px;
-        }
+        }    
     </style>
 </head>
 <body>
