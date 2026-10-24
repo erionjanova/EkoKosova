@@ -1,10 +1,14 @@
-# EkoKosova
+# 🌱 EkoKosova
 
 *Platformë digjitale për raportimin e ndotjes në Kosovë.*
 
 A web platform where citizens of Kosovo can report pollution in their city (illegal dumps, polluted rivers, air pollution) with a description and a photo, so problems become visible instead of being ignored.
 
 Built with PHP and MySQL. The interface is in Albanian.
+
+**Live demo:** [ekokosova.vercel.app](https://ekokosova.vercel.app)
+
+<img src="https://skillicons.dev/icons?i=php,mysql,html,css,js,vercel" alt="PHP, MySQL, HTML, CSS, JavaScript, Vercel" />
 
 ## Why I built this
 
@@ -24,10 +28,6 @@ Pollution is a visible, everyday problem in many Kosovar towns, but there is no 
 - dashboard with an overview of the platform
 - manage users, reports and contact messages (edit and delete)
 - manage the environmental quotes shown on the site, including the author's photo
-
-## Tech stack
-
-PHP · MySQL · PDO · HTML · CSS · JavaScript
 
 ## How it works
 
