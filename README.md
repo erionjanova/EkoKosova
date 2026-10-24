@@ -4,15 +4,23 @@
 
 A web platform where citizens of Kosovo can report pollution in their city (illegal dumps, polluted rivers, air pollution) with a description and a photo, so problems become visible instead of being ignored.
 
-Built with PHP and MySQL. The interface is in Albanian.
+A university team project built by three developers with PHP and MySQL. The interface is in Albanian.
 
 **Live demo:** [ekokosova.vercel.app](https://ekokosova.vercel.app)
 
 <img src="https://skillicons.dev/icons?i=php,mysql,html,css,js,vercel" alt="PHP, MySQL, HTML, CSS, JavaScript, Vercel" />
 
-## Why I built this
+## About the project
 
-Pollution is a visible, everyday problem in many Kosovar towns, but there is no simple place where people can report it and see what others have reported. I wanted to build a full web application from scratch around a problem I actually care about, including user accounts, file uploads and an admin side.
+Pollution is a visible, everyday problem in many Kosovar towns, but there is no simple place where people can report it and see what others have reported. We built EkoKosova as a university team project to change that: a full web application with user accounts, photo uploads and an admin side.
+
+## Team
+
+| Developer | Main work |
+|---|---|
+| [Erion Janova](https://github.com/erionjanova) | home page, navigation, About page, reports page and latest reports, quotes page, parts of the admin dashboard and user management, Albanian translation of the interface |
+| [Drin Berisha](https://github.com/drinberiishaa) | database design, login and sign-up logic, profiles, password reset, most of the admin dashboard |
+| [Florent Cakaj](https://github.com/FFlorenti) | login and sign-up pages, contact page |
 
 ## Features
 
@@ -57,13 +65,9 @@ You need a local PHP and MySQL server such as [MAMP](https://www.mamp.info/) or 
 3. Check the database user and password in `config.php`.
 4. Open `http://localhost/EkoKosova` in your browser.
 
-## What I'd improve next
+## Possible improvements
 
 - send the password reset link by email instead of redirecting straight to the reset page
 - let admins mark reports as resolved and show the status publicly
 - show reports on a map of Kosovo
 - move the database credentials out of `config.php` into environment variables
-
-## Author
-
-Erion Janova · [GitHub](https://github.com/erionjanova) · [LinkedIn](https://www.linkedin.com/in/erion-janova-60bb42340)
